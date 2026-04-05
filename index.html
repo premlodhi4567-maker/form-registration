@@ -597,7 +597,7 @@
             });
             
             // Send to Google Apps Script Web App
-            fetch('https://script.google.com/macros/s/AKfycbw5kr5IvVQcFA3etvDvhgrcl5VdihVNEdGeAXOXtHdHc11EROhNkQ16D7Z_h45t2WF49w/exec', {
+            fetch('https://script.google.com/macros/s/AKfycbxqupXoKuyNTKcqP0LiMAJSSzSDaLg-doths-t7t4WDyfMfaLyotlfWCM9tKSIM53R1UA/exec', {
                 method: 'POST',
                 body: new URLSearchParams({
                     timestamp: document.getElementById('timestamp').value,
@@ -668,9 +668,26 @@
                 }
             })
             .catch(error => {
-                statusDiv.textContent = 'Error: ' + error.message;
+                console.error('Fetch error:', error);
+                console.error('Error details:', {
+                    message: error.message,
+                    status: error.status,
+                    statusText: error.statusText,
+                    url: 'YOUR_NEW_WEB_APP_URL_HERE'
+                });
+                statusDiv.textContent = 'Network error: ' + error.message + ' (Check console for details)';
                 statusDiv.style.backgroundColor = '#f8d7da';
                 statusDiv.style.color = '#721c24';
+                
+                // Show detailed error information
+                if (error.status === 0) {
+                    statusDiv.innerHTML = 'Error: Unable to connect to Google Apps Script. Please check:<br>' +
+                        '1. Script is properly deployed as Web App<br>' +
+                        '2. Development mode is OFF<br>' +
+                        '3. Permissions are granted<br>' +
+                        '4. URL is correct in HTML file<br>' +
+                        '<small>Check browser console (F12) for more details</small>';
+                }
             });
         });
     });
