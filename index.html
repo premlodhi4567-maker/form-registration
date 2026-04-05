@@ -3,219 +3,1624 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marriage Registration Form</title>
+    <title>Marriage Registration Form - No Commas</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f0f2f5; line-height: 1.6; background-image: url('https://images.unsplash.com/photo-1519225423996-6d5e8d5f8d3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-position: center; background-attachment: fixed; }
-        h1 { text-align: center; color: #1a73e8; font-size: 24px; }
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f0f2f5; line-height: 1.6; background-image: url('https://images.unsplash.com/photo-1519225423996-6d5e8d5f8d3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; }      h1 { text-align: center; color: #1a73e8; font-size: 24px; }
+        
+        /* Review Modal Styles */
+        .review-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+        
+        .review-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .review-header {
+            text-align: center;
+            color: #1a73e8;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1a73e8;
+        }
+        
+        .review-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #1a73e8;
+        }
+        
+        .review-section h3 {
+            color: #1a73e8;
+            margin-top: 0;
+        }
+        
+        .review-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        
+        .review-label {
+            font-weight: bold;
+            min-width: 150px;
+            color: #333;
+        }
+        
+        .review-value {
+            color: #555;
+            flex: 1;
+        }
+        
+        .review-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .review-buttons button {
+            margin: 0 10px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .confirm-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .confirm-btn:hover {
+            background-color: #218838;
+        }
+        
+        .cancel-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #c82333;
+        }
         form { max-width: 900px; margin: auto; background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); backdrop-filter: blur(5px); }
+        @media (max-width: 768px) {
+            form { padding: 10px; margin: 10px; }
+            .row { flex-direction: column; gap: 10px; }
+            .col { width: 100%; }
+            input, select { font-size: 16px; }
+            h1 { font-size: 20px; }
+        }
         fieldset { border: 1px solid #e0e0e0; margin-bottom: 25px; padding: 20px; border-radius: 8px; }
         legend { font-weight: bold; color: #1a73e8; padding: 0 10px; }
         .boy-details { background-color: #e3f2fd; }
         .girl-details { background-color: #f3e5f5; }
         .marriage-details { background-color: #e8f5e8; }
         .witness-details { background-color: #fff3e0; }
+        .address-selection { margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #ddd; }
         label { font-weight: 600; display: block; margin-top: 15px; }
         input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        input[type="submit"] { background-color: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 20px; }
+        input[type="submit"]:hover { background-color: #0056b3; }
+        input[type="submit"]:active { background-color: #004085; }
+        input:required:invalid, select:required:invalid { background-color: #ffcccc; } /* light red for unfilled required */
+        input:required:valid, select:required:valid { background-color: #ccffcc; } /* light green for filled required */
+        input[readonly] { background-color: #ccffcc; } /* light green for readonly age fields */
+        input[id$="-hi"] { background-color: #ffa500; border: 1px solid #f1c40f; }
         .row { display: flex; gap: 15px; }
         .col { flex: 1; }
-        input[type="submit"] { background-color: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 20px; }
-        input[readonly] { background-color: #e9ecef; }
-        .timestamp-section input { background-color: #d4edda; font-weight: bold; text-align: center; width: 220px; margin: 0 auto; display: block; }
-        #status-message { text-align: center; margin-top: 20px; padding: 15px; border-radius: 5px; display: none; font-weight: bold; }
-        @media (max-width: 768px) { .row { flex-direction: column; gap: 5px; } }
+        .address-selection { margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #ddd; }
+        .address-selection label { display: block; margin-bottom: 10px; font-weight: normal; }
+        .address-selection input, .address-selection select { width: 100%; margin-bottom: 10px; }
+        @media (max-width: 768px) {
+            .address-selection { padding: 10px; }
+            .address-selection label { font-size: 16px; }
+            .address-selection input, .address-selection select { font-size: 16px; }
+        }
+        .upload-selection { margin-bottom: 20px; padding: 15px; background-color: #fff3cd; border-radius: 8px; border: 1px solid #ddd; }
+        .upload-selection label { display: inline-block; margin-right: 20px; font-weight: normal; }
+        .sadar-selection { margin-bottom: 20px; padding: 15px; background-color: #e7f3ff; border-radius: 8px; border: 1px solid #ddd; }
+        .sadar-selection label { display: inline-block; margin-right: 20px; font-weight: normal; }
+        .timestamp-section { margin-bottom: 20px; padding: 15px; background-color: #e8f4f8; border-radius: 8px; border: 1px solid #ddd; }
+        .timestamp-section input { background-color: #d4edda; font-weight: bold; text-align: center; }
+        .terms-section { margin-top: 40px; padding: 30px; background: rgba(248, 249, 250, 0.95); border-radius: 8px; border: 1px solid #ddd; backdrop-filter: blur(5px); }
+        .terms-section h2 { color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 10px; }
+        .terms-section h3 { color: #333; margin-top: 20px; margin-bottom: 10px; }
+        .terms-section ul { margin-left: 20px; }
+        .terms-section li { margin-bottom: 5px; }
     </style>
+<script src="https://apis.google.com/js/api.js"></script>
 </head>
 <body>
 
-<h1>Marriage Registration Form</h1>
-
-<div class="timestamp-section">
-    <input type="text" id="timestamp" readonly>
-</div>
-
+<h1>Registration Form</h1>
+    
+    <div class="timestamp-section">
+        <input type="text" id="timestamp" readonly placeholder="Unix timestamp will appear here..." style="width: 300px; margin: 10px auto; display: block; padding: 10px; background-color: #d4edda; font-weight: bold; text-align: center; border: 1px solid #c3e6cb; border-radius: 4px;">
+        <script>
+            // Set timestamp immediately
+            const now = new Date();
+            const unixTime = Math.floor(now.getTime() / 1000);
+            const milliseconds = now.getMilliseconds();
+            document.getElementById('timestamp').value = unixTime + milliseconds.toString().padStart(3, '0');
+        </script>
+    </div>
+    
 <form id="marriageForm">
-    <div class="address-selection" style="padding:15px; background:#fff; border-radius:8px; margin-bottom:15px; border:1px solid #ddd;">
+    
+    <div class="address-selection">
         <label>ADV Name:</label>
-        <input type="text" id="adv-name" required>
-        <label>Primary Address Basis:</label>
+        <input type="text" id="adv-name" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
+        <label style="display: inline-block; margin-right: 20px; font-weight: normal;">Address Type:</label>
         <select id="address-type" required>
-            <option value="" disabled selected>Select Address Type</option>
+            <option selected></option>
             <option>Boy Address</option>
             <option>Girl Address</option>
             <option>Marriage Address</option>
         </select>
     </div>
-
-    <div class="upload-selection" style="padding:15px; background:#fff3cd; border-radius:8px; margin-bottom:15px;">
-        <label>Do you want to upload documents?</label>
+    
+    <div class="upload-selection">
+        <label>Do you want Upload the documents ?</label>
         <select id="upload-toggle" required>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
+            <option selected></option>
+            <option>Yes</option>
+            <option>No</option>
         </select>
     </div>
-
-    <div class="sadar-selection" style="padding:15px; background:#e7f3ff; border-radius:8px; margin-bottom:15px;">
+    
+    <div class="sadar-selection">
         <label>Please Select Your Sadar:</label>
         <select id="sadar-select" required>
-            <option value="" disabled selected>Select Sadar</option>
-            <option>Sadar First</option><option>Sadar Second</option><option>Sadar Third</option>
+            <option selected></option>
+            <option>Sadar First</option>
+            <option>Sadar Second</option>
+            <option>Sadar Third</option>
+            <option>Sadar Fourth</option>
+            <option>Sadar Fifth</option>
         </select>
     </div>
-
+    
     <fieldset class="boy-details">
         <legend>Boy's Details</legend>
-        <div class="upload-field">
-            <label>Boy's Photo:</label>
-            <div style="display: flex; gap: 10px;">
-                <input type="file" id="boy-photo" accept="image/*" class="doc-upload">
-                <button type="button" onclick="capturePhoto('boy-photo')" class="cam-btn">📷 Camera</button>
-            </div>
-            <img id="boy-photo-preview" style="max-width: 150px; margin-top:10px; display: none; border: 2px solid #fff;">
-        </div>
         <div class="row">
             <div class="col"><label>Boy Name (EN):</label><input type="text" id="boy-name-en" required></div>
             <div class="col"><label>Boy Name (HI):</label><input type="text" id="boy-name-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Mother Name (EN):</label><input type="text" id="boy-mother-en" required></div>
+            <div class="col"><label>Mother Name (HI):</label><input type="text" id="boy-mother-hi" required></div>
         </div>
         <div class="row">
             <div class="col"><label>Father Name (EN):</label><input type="text" id="boy-father-en" required></div>
             <div class="col"><label>Father Name (HI):</label><input type="text" id="boy-father-hi" required></div>
         </div>
         <div class="row">
-            <div class="col"><label>Boy DOB:</label><input type="date" id="boy-dob" required></div>
+            <div class="col"><label>Boy DOB (DD-MM-YYYY):</label>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="boy-dob" placeholder="DD-MM-YYYY" required pattern="\d{2}-\d{2}-\d{4}" maxlength="10" style="flex: 1;">
+                    <input type="date" id="boy-dob-picker" style="flex: 0; width: 40px; cursor: pointer;" title="Choose date">
+                </div>
+            </div>
             <div class="col"><label>Age:</label><input type="text" id="boy-age" readonly></div>
         </div>
-        <label>Religion:</label>
-        <select id="boy-religion" required>
-            <option value="">Select Religion</option>
-            <option>हिन्दू धर्म (Hinduism)</option>
-            <option>इस्लाम धर्म (Islam)</option>
-        </select>
+        <label>Marriage Status:</label><select id="boy-marriage-status" required><option></option><option selected>Unmarried</option><option>Single / Divorced</option></select>
+        <label>Religion:</label><select id="boy-religion" required><option selected></option><option>हिन्दू धर्म (Hinduism)</option><option>इस्लाम धर्म (Islam)</option><option>सिख धर्म (Sikhism)</option><option>ईसाई धर्म (Christianity)</option><option>जैन धर्म (Jainism)</option><option>बौद्ध धर्म (Buddhism)</option><option>पारसी धर्म (Parsi)</option><option>अंतर्धार्मिक / धर्मनिरपेक्ष (Interfaith / Secular)</option></select>
         <div class="row">
-            <div class="col"><label>Address (EN):</label><input type="text" id="boy-address-en" required placeholder="No commas allowed"></div>
+            <div class="col"><label>Address (EN):</label><input type="text" id="boy-address-en" required></div>
+            <div class="col"><label>Address (HI):</label><input type="text" id="boy-address-hi" required></div>
+        </div>
+        <div class="row">
             <div class="col"><label>Pincode:</label><input type="text" id="boy-pincode" maxlength="6" required></div>
+            <div class="col"><label>Mobile:</label><input type="tel" id="boy-mobile" maxlength="10" required value="9800000000"></div>
         </div>
     </fieldset>
+
+    <fieldset class="boy-uploads">
+        <legend>Boy's Document Uploads</legend>
+        <label>Boy's Photo:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-photo" accept="image/*" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('boy-photo')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <img id="boy-photo-preview" style="max-width: 200px; display: none;"><br><br>
+        
+        <label>Boy's Pan Card Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-pan-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('boy-pan-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        
+        <label>Boy's Aadhaar Card Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-aadhaar-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('boy-aadhaar-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        
+        <label>Boy's Aadhaar Card Back Upload (Optional):</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-aadhaar-back-upload" accept=".pdf,.jpg,.png,.jpeg" style="flex: 1;">
+            <button type="button" onclick="capturePhoto('boy-aadhaar-back-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        
+        <label>Boy's Marksheet Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-marksheet-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('boy-marksheet-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        
+        <label>Boy's Affidavit Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-affidavit-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('boy-affidavit-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+    </fieldset>
+
+    <fieldset class="girl-details">
+        <legend>Girl's Details</legend>
+        <div class="row">
+            <div class="col"><label>Girl Name (EN):</label><input type="text" id="girl-name-en" required></div>
+            <div class="col"><label>Girl Name (HI):</label><input type="text" id="girl-name-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Mother (EN):</label><input type="text" id="girl-mother-en" required></div>
+            <div class="col"><label>Mother (HI):</label><input type="text" id="girl-mother-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Father (EN):</label><input type="text" id="girl-father-en" required></div>
+            <div class="col"><label>Father (HI):</label><input type="text" id="girl-father-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Girl DOB (DD-MM-YYYY):</label>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="girl-dob" placeholder="DD-MM-YYYY" required pattern="\d{2}-\d{2}-\d{4}" maxlength="10" style="flex: 1;">
+                    <input type="date" id="girl-dob-picker" style="flex: 0; width: 40px; cursor: pointer;" title="Choose date">
+                </div>
+            </div>
+            <div class="col"><label>Age:</label><input type="text" id="girl-age" readonly></div>
+        </div>
+        <label>Marriage Status:</label><select id="girl-marriage-status" required><option></option><option selected>Unmarried</option><option>Single / Divorced</option></select>
+        <label>Religion:</label><select id="girl-religion" required><option selected></option><option>हिन्दू धर्म (Hinduism)</option><option>इस्लाम धर्म (Islam)</option><option>सिख धर्म (Sikhism)</option><option>ईसाई धर्म (Christianity)</option><option>जैन धर्म (Jainism)</option><option>बौद्ध धर्म (Buddhism)</option><option>पारसी धर्म (Parsi)</option><option>अंतर्धार्मिक / धर्मनिरपेक्ष (Interfaith / Secular)</option></select>
+        <div class="row">
+            <div class="col"><label>Address (EN):</label><input type="text" id="girl-address-en" required></div>
+            <div class="col"><label>Address (HI):</label><input type="text" id="girl-address-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Pincode:</label><input type="text" id="girl-pincode" maxlength="6" required></div>
+            <div class="col"><label>Mobile:</label><input type="tel" id="girl-mobile" maxlength="10" required value="9800000000"></div>
+        </div>
+    </fieldset>
+
+    <fieldset class="girl-uploads">
+        <legend>Girl's Document Uploads</legend>
+        <label>Girl's Photo:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-photo" accept="image/*" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('girl-photo')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <img id="girl-photo-preview" style="max-width: 200px; display: none;"><br><br>
+        
+        <label>Girl's Pan Card Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-pan-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('girl-pan-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        
+        <label>Girl's Aadhaar Card Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-aadhaar-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('girl-aadhaar-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        
+        <label>Girl's Aadhaar Card Back Upload (Optional):</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-aadhaar-back-upload" accept=".pdf,.jpg,.png,.jpeg" style="flex: 1;">
+            <button type="button" onclick="capturePhoto('girl-aadhaar-back-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        
+        <label>Girl's Marksheet Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-marksheet-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('girl-marksheet-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        
+        <label>Girl's Affidavit Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-affidavit-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('girl-affidavit-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+    </fieldset>
+
+    <fieldset class="marriage-details">
+        <legend>Marriage Details</legend>
+        <div class="row">
+            <div class="col"><label>Marriage Center (EN):</label>
+                <select id="marriage-center-select" required style="flex: 1; margin-right: 5px;">
+                    <option value="">-- Select Center --</option>
+                    <option value="NAITIK VAIDIK SANSKAR SAMITI REGD GANDHI NAGAR GHAZIABAD">Naitik Vaidik Sanskar Samiti Regd Gandhi Nagar, Ghaziabad</option>
+                    <option value="MOTI MAHAL MASJID KELLA BHATTA GHAZIABAD">Moti Mahal Masjid Kella Bhatta Ghaziabad</option>
+                    <option value="ARYA SAMAJ VIVAH UTHAN KENDRA OLD VIJAY NAGAR GHAZIABAD">Arya Samaj Vivah Uthan Kendra Old Vijay Nagar, Ghaziabad</option>
+                    <option value="ARYA SAMAJ VIVAH SANSKAR TRUST EAST MODEL TOWN GHAZIABAD">Arya Samaj Vivah Sanskar Trust East Model Town, Ghaziabad</option>
+                    <option value="ARYA SAMAJ SANSKAR TRUST REGD GHAZIABAD">Arya Samaj Sanskar Trust Regd Ghaziabad</option>
+                    <option value="OTHER">Other (Manual Entry)</option>
+                </select>
+                <input type="text" id="marriage-center-en" placeholder="Or type center name" style="flex: 1; display: none;">
+            </div>
+            <div class="col"><label>Marriage Center (HI):</label>
+                <input type="text" id="marriage-center-hi" placeholder="या दें केंद्र नाम टाइपें" style="flex: 1;">
+            </div>
+        </div>
+        <label>Marriage Date (DD-MM-YYYY):</label>
+                <div style="display: flex; gap: 5px; max-width: 300px;">
+                    <input type="text" id="marriage-date" placeholder="DD-MM-YYYY" required pattern="\d{2}-\d{2}-\d{4}" maxlength="10" style="flex: 1;">
+                    <input type="date" id="marriage-date-picker" style="flex: 0; width: 40px; cursor: pointer;" title="Choose date">
+                </div>
+        <label>Marriage Certificate Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="marriage-certificate-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('marriage-certificate-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+    </fieldset>
+
+    <label>Who is Witness 1:</label><select id="witness1-relationship" required><option selected></option><option value="MOTHER FATHER">Mata Pita (Mother Father) - माता पिता</option><option value="BROTHER SISTER">Bhai Bhen (Brother Sister) - भाई बहन</option><option value="DADA DADI">Dada Dadi (Paternal Grandparents) - दादा दादी</option><option value="NANA NANI">Nana Nani (Maternal Grandparents) - नाना नानी</option><option value="OTHER">Other - अन्य</option></select><br><br>
+    <div style="background-color: #fff3cd; padding: 10px; border: 1px solid #ffeaa7; border-radius: 4px; margin-bottom: 15px;">
+    <label><strong>📋 Select Witness 1 Name (Auto-Fill Available):</strong></label><br>
+    <select id="witness1-name-select" style="margin-top: 10px; margin-bottom: 15px; padding: 10px; border: 2px solid #007bff; border-radius: 4px; width: 100%; background: white; font-size: 14px; font-weight: bold;">
+        <option value="">-- Choose from Pre-filled Witnesses --</option>
+        <option value="Vipin Tyagi">👤 Vipin Tyagi</option>
+        <option value="Mahipal">👤 Mahipal</option>
+        <option value="Mohd Furqan">👤 Mohd Furqan</option>
+        <option value="Dharmraj">👤 Dharmraj</option>
+        <option value="Raju">👤 Raju</option>
+        <option value="Muhammad Asad">👤 Muhammad Asad</option>
+        <option value="Brajesh Kumar">👤 Brajesh Kumar</option>
+    </select>
+    <small style="color: #666; font-style: italic;">💡 Select a name to auto-fill all witness details, or leave empty to enter manually</small>
+</div><br>
 
     <fieldset class="witness-details">
         <legend>Witness 1 Details</legend>
-        <label>Relationship:</label>
-        <select id="witness1-relationship" required>
-            <option value="">Select Relationship</option>
-            <option value="Mother">Mother/Father</option>
-            <option value="Other">Other</option>
-        </select>
+        <label>Witness 1's Photo:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="witness1-photo" accept="image/*" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('witness1-photo')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <img id="witness1-photo-preview" style="max-width: 200px; display: none;"><br><br>
+        <label>Title:</label><select id="witness1-title" required><option></option><option selected>Mr.</option><option>Mrs.</option></select>
         <div class="row">
             <div class="col"><label>Name (EN):</label><input type="text" id="witness1-name-en" required></div>
-            <div class="col"><label>Mobile:</label><input type="tel" id="witness1-mobile" maxlength="10" required></div>
+            <div class="col"><label>Name (HI):</label><input type="text" id="witness1-name-hi" required></div>
         </div>
+        <div class="row">
+            <div class="col"><label>Father Name (EN):</label><input type="text" id="witness1-father-en" required></div>
+            <div class="col"><label>Father Name (HI):</label><input type="text" id="witness1-father-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Address (EN):</label><input type="text" id="witness1-address-en" required></div>
+            <div class="col"><label>Address (HI):</label><input type="text" id="witness1-address-hi" required></div>
+        </div>
+        <label>Witness 1's Proof Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="witness1-proof-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('witness1-proof-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label id="witness1-affidavit-label" style="display: none;">Witness 1's Affidavit Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="witness1-affidavit-upload" accept=".pdf,.jpg,.png,.jpeg" style="display: none;">
+            <button type="button" onclick="capturePhoto('witness1-affidavit-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; display: none;">📷 Camera</button>
+        </div>
+        <label>Mobile Number:</label><input type="tel" id="witness1-mobile" maxlength="10" required value="9800000000">
     </fieldset>
 
-    <div style="text-align: center; padding: 20px;">
-        <input type="submit" value="Submit Registration">
-        <button type="button" onclick="testSubmit()" style="background-color: #28a745; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-left: 10px;">Test Connection</button>
-    </div>
+    <fieldset class="witness-details">
+        <legend>Witness 2 Details</legend>
+        <label>Witness 2's Photo:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="witness2-photo" accept="image/*" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('witness2-photo')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <img id="witness2-photo-preview" style="max-width: 200px; display: none;"><br><br>
+        <label>Title:</label><select id="witness2-title" required><option></option><option selected>Mr.</option><option>Mrs.</option></select>
+        <div class="row">
+            <div class="col"><label>Name (EN):</label><input type="text" id="witness2-name-en" required></div>
+            <div class="col"><label>Name (HI):</label><input type="text" id="witness2-name-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Father Name (EN):</label><input type="text" id="witness2-father-en" required></div>
+            <div class="col"><label>Father Name (HI):</label><input type="text" id="witness2-father-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Address (EN):</label><input type="text" id="witness2-address-en" required></div>
+            <div class="col"><label>Address (HI):</label><input type="text" id="witness2-address-hi" required></div>
+        </div>
+        <label>Witness 2's Proof Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="witness2-proof-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('witness2-proof-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label>Mobile Number:</label><input type="tel" id="witness2-mobile" maxlength="10" required value="9800000000">
+    </fieldset>
+
+    <input type="submit" value="Submit Registration">
+    
+    <!-- Hidden fields for witness addresses in Hindi -->
+    <input type="hidden" id="witness1-address-hi-hidden" name="entry.2091199383" value="">
+    <input type="hidden" id="witness2-address-hi-hidden" name="entry.2008452782" value="">
 </form>
 
-<div id="status-message"></div>
+<div id="status-message" style="text-align: center; margin-top: 20px; padding: 10px; border-radius: 5px; display: none;"></div>
+
+<!-- Review Modal -->
+<div id="reviewModal" class="review-modal">
+    <div class="review-content">
+        <div class="review-header">
+            <h2>📋 Review Your Information</h2>
+            <p>Please review all details before submitting</p>
+        </div>
+        
+        <div id="reviewContent"></div>
+        
+        <div class="review-buttons">
+            <button type="button" class="cancel-btn" onclick="closeReviewModal()">✖ Cancel</button>
+            <button type="button" class="confirm-btn" onclick="confirmSubmit()">✓ Confirm & Submit</button>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="terms-section">
+    <h2>Terms & Conditions</h2>
+    
+    <p><strong>This is for all person use the website</strong></p>
+    
+    <p>
+    These Terms & Conditions ("Terms") govern access and use of this website, platform, form, and related services
+    (collectively, "Service"). By using this Service, submitting any information, or requesting assistance through this website,
+    you agree to be legally bound by these Terms under applicable laws of India.
+    </p>
+    
+    <p>
+    <a href="terms.html" target="_blank" style="color: #1a73e8; text-decoration: underline;">Click here to read the complete Terms & Conditions</a>
+    </p>
+</div>
 
 <script>
-    // --- GLOBAL FUNCTIONS (Accessible by HTML) ---
-
-    function capturePhoto(inputId) {
-        const input = document.getElementById(inputId);
-        if (!navigator.mediaDevices) return alert("Camera not supported");
-
-        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-            const video = document.createElement('video');
-            video.srcObject = stream;
-            video.play();
-            
-            setTimeout(() => {
-                const canvas = document.createElement('canvas');
-                canvas.width = 640; canvas.height = 480;
-                canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
-                
-                canvas.toBlob(blob => {
-                    const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
-                    const container = new DataTransfer();
-                    container.items.add(file);
-                    input.files = container.files;
-                    input.dispatchEvent(new Event('change')); // Trigger preview
-                }, 'image/jpeg');
-                
-                stream.getTracks().forEach(t => t.stop());
-            }, 1000);
-        }).catch(err => alert("Camera error: " + err));
+    console.log('JavaScript is loading...');
+    
+    // Global functions for review modal
+    function closeReviewModal() {
+        document.getElementById('reviewModal').style.display = 'none';
     }
-
-    function testSubmit() {
-        alert("System check: Buttons are linked! Checking form validation now...");
-        const form = document.getElementById('marriageForm');
-        if (form.checkValidity()) {
-            form.dispatchEvent(new Event('submit'));
+    
+    function confirmSubmit() {
+        closeReviewModal();
+        submitToGoogleForm();
+    }
+    
+    // Function to merge Aadhaar front and back images
+    function mergeAadhaarImages(frontFile, backFile, gender) {
+        return new Promise((resolve) => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const frontImg = new Image();
+            const backImg = new Image();
+            
+            frontImg.onload = function() {
+                backImg.onload = function() {
+                    // Set canvas dimensions (width = wider of two, height = sum of heights)
+                    canvas.width = Math.max(frontImg.width, backImg.width);
+                    canvas.height = frontImg.height + backImg.height;
+                    
+                    // Draw front image on top
+                    ctx.drawImage(frontImg, 0, 0, canvas.width, frontImg.height);
+                    
+                    // Draw back image below
+                    ctx.drawImage(backImg, 0, frontImg.height, canvas.width, backImg.height);
+                    
+                    // Add labels
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect(0, 0, canvas.width, 30);
+                    ctx.fillRect(0, frontImg.height, canvas.width, 30);
+                    
+                    ctx.fillStyle = 'black';
+                    ctx.font = 'bold 16px Arial';
+                    ctx.fillText(`${gender.toUpperCase()} AADHAAR CARD - FRONT`, 10, 20);
+                    ctx.fillText(`${gender.toUpperCase()} AADHAAR CARD - BACK`, 10, frontImg.height + 20);
+                    
+                    // Convert to blob and return
+                    canvas.toBlob(resolve, 'image/jpeg', 0.9);
+                };
+                backImg.src = URL.createObjectURL(backFile);
+            };
+            frontImg.src = URL.createObjectURL(frontFile);
+        });
+    }
+    
+    // Function to handle Aadhaar upload merging
+    async function handleAadhaarUpload(gender) {
+        const frontInput = document.getElementById(`${gender}-aadhaar-upload`);
+        const backInput = document.getElementById(`${gender}-aadhaar-back-upload`);
+        
+        if (frontInput.files.length > 0 && backInput.files.length > 0) {
+            try {
+                console.log(`Merging ${gender} Aadhaar images...`);
+                const mergedBlob = await mergeAadhaarImages(frontInput.files[0], backInput.files[1], gender);
+                
+                // Create a new file from the merged blob
+                const mergedFile = new File([mergedBlob], `${gender}_aadhaar_merged.jpg`, {
+                    type: 'image/jpeg',
+                    lastModified: Date.now()
+                });
+                
+                // Create a new FileList containing only the merged file
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(mergedFile);
+                
+                // Replace the front input with merged file
+                frontInput.files = dataTransfer.files;
+                
+                console.log(`${gender} Aadhaar images merged successfully`);
+                
+                // Clear the back input since it's now merged
+                backInput.value = '';
+                
+            } catch (error) {
+                console.error(`Error merging ${gender} Aadhaar images:`, error);
+            }
+        }
+    }
+    
+    // Google Drive API Configuration
+    const API_KEY = 'AIzaSyBhZjH1Q7fQ8X9Y2Z3W4V5U6I7J8K9L0M1N2';
+    const DRIVE_FOLDER_ID = '1rO4EOAx77Fv_HP4Skk_55qavzj2bl25y';
+    
+    // Initialize Google Drive API
+    function initGoogleDriveAPI() {
+        if (typeof gapi !== 'undefined') {
+            gapi.load('client', () => {
+                gapi.client.init({
+                    apiKey: API_KEY,
+                    discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+                }).then(() => {
+                    console.log('Google Drive API initialized');
+                }, (error) => {
+                    console.error('Error initializing Google Drive API:', error);
+                });
+            });
         } else {
-            form.reportValidity();
+            console.warn('Google API not loaded - Drive upload disabled');
+        }
+    }
+    
+    // Create folder in Google Drive
+    async function createDriveFolder(folderName) {
+        try {
+            const response = await gapi.client.drive.files.create({
+                resource: {
+                    name: folderName,
+                    mimeType: 'application/vnd.google-apps.folder',
+                    parents: [DRIVE_FOLDER_ID]
+                }
+            });
+            return response.result.id;
+        } catch (error) {
+            console.error('Error creating folder:', error);
+            throw error;
+        }
+    }
+    
+    // Upload file to Google Drive
+    async function uploadFileToDrive(file, folderId, fileName) {
+        const metadata = {
+            name: fileName,
+            parents: [folderId]
+        };
+        
+        const form = new FormData();
+        form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+        form.append('file', file);
+        
+        try {
+            const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&key=' + API_KEY, {
+                method: 'POST',
+                body: form
+            });
+            
+            if (!response.ok) {
+                throw new Error('Upload failed');
+            }
+            
+            const result = await response.json();
+            console.log('File uploaded successfully:', result);
+            return result;
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            throw error;
+        }
+    }
+    
+    // Get all uploaded files from form
+    function getUploadedFiles() {
+        const files = [];
+        const fileInputs = [
+            'boy-photo', 'girl-photo', 'witness1-photo', 'witness2-photo',
+            'boy-pan-upload', 'boy-aadhaar-upload', 'boy-marksheet-upload', 'boy-affidavit-upload',
+            'girl-pan-upload', 'girl-aadhaar-upload', 'girl-marksheet-upload', 'girl-affidavit-upload',
+            'marriage-certificate-upload', 'witness1-proof-upload', 'witness1-affidavit-upload', 'witness2-proof-upload'
+        ];
+        
+        fileInputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input && input.files.length > 0) {
+                files.push({
+                    inputId: inputId,
+                    file: input.files[0],
+                    fileName: `${inputId}_${input.files[0].name}`
+                });
+            }
+        });
+        
+        return files;
+    }
+    
+    // Upload all files to Drive
+    async function uploadAllFilesToDrive() {
+        // Check if Google API is available
+        if (typeof gapi === 'undefined' || !gapi.client) {
+            console.warn('Google Drive API not available - skipping Drive upload');
+            return 'skipped';
+        }
+        
+        const timestamp = document.getElementById('timestamp').value;
+        const folderName = `Registration_${timestamp}`;
+        
+        try {
+            console.log('Creating Drive folder:', folderName);
+            const folderId = await createDriveFolder(folderName);
+            console.log('Folder created with ID:', folderId);
+            
+            const files = getUploadedFiles();
+            console.log('Found files to upload:', files.length);
+            
+            for (const fileData of files) {
+                console.log('Uploading:', fileData.fileName);
+                await uploadFileToDrive(fileData.file, folderId, fileData.fileName);
+            }
+            
+            console.log('All files uploaded successfully to Drive');
+            return true;
+        } catch (error) {
+            console.error('Error uploading files to Drive:', error);
+            return false;
         }
     }
 
-    // --- DOM LOGIC ---
+    function submitToGoogleForm() {
+        const statusDiv = document.getElementById('status-message');
+        statusDiv.style.display = 'block';
+        statusDiv.textContent = 'Submitting...';
+        statusDiv.style.backgroundColor = '#fff3cd';
+        statusDiv.style.color = '#856404';
+        console.log('Submitting to Google Form...');
+        
+        // Submit to Google Forms
+        const formData = new FormData();
+        
+        // Map all form fields to Google Forms entry IDs with REAL values
+        formData.append('entry.770625512', document.getElementById('timestamp').value); // Unix
+        formData.append('entry.60433678', document.getElementById('adv-name').value); // Adv Name
+        formData.append('entry.433537794', document.getElementById('address-type').value); // Address Type
+        formData.append('entry.1906475701', document.getElementById('upload-toggle').value); // Document Upload
+        formData.append('entry.807589530', document.getElementById('sadar-select').value); // Select Sadar
+        formData.append('entry.149019014', document.getElementById('boy-name-en').value); // Boy Name EN
+        formData.append('entry.1896435809', document.getElementById('boy-name-hi').value); // Boy Name HI
+        formData.append('entry.19816608', document.getElementById('boy-mother-en').value); // Boy Mother Name EN
+        formData.append('entry.1418874244', document.getElementById('boy-mother-hi').value); // Boy Mother Name HI
+        formData.append('entry.1632741632', document.getElementById('boy-father-en').value); // Boy Father Name EN
+        formData.append('entry.289552678', document.getElementById('boy-father-hi').value); // Boy Father Name HI
+        formData.append('entry.821867175', document.getElementById('boy-dob').value); // Boy DOB
+        formData.append('entry.156896192', document.getElementById('boy-age').value); // Boy Age
+        formData.append('entry.1671585647', document.getElementById('boy-marriage-status').value); // Boy Marriage Status
+        formData.append('entry.1158586356', document.getElementById('boy-religion').value); // Boy Religion
+        formData.append('entry.1697136002', document.getElementById('boy-address-en').value); // Boy Address EN
+        formData.append('entry.1642955854', document.getElementById('boy-address-hi').value); // Boy Address HI
+        formData.append('entry.775872867', document.getElementById('boy-pincode').value); // Boy Pincode
+        formData.append('entry.203843137', document.getElementById('boy-mobile').value); // Boy Mobile
+        formData.append('entry.1093816412', document.getElementById('girl-name-en').value); // Girl Name EN
+        formData.append('entry.995529290', document.getElementById('girl-name-hi').value); // Girl Name HI
+        formData.append('entry.37249290', document.getElementById('girl-mother-en').value); // Girl Mother Name EN
+        formData.append('entry.1307423071', document.getElementById('girl-mother-hi').value); // Girl Mother Name HI
+        formData.append('entry.1565189125', document.getElementById('girl-father-en').value); // Girl Father Name EN
+        formData.append('entry.809641902', document.getElementById('girl-father-hi').value); // Girl Father Name HI
+        formData.append('entry.1528584281', document.getElementById('girl-dob').value); // Girl DOB
+        formData.append('entry.574377665', document.getElementById('girl-age').value); // Girl Age
+        formData.append('entry.620399889', document.getElementById('girl-marriage-status').value); // Girl Marriage Status
+        formData.append('entry.1553220047', document.getElementById('girl-religion').value); // Girl Religion
+        formData.append('entry.760651392', document.getElementById('girl-address-en').value); // Girl Address EN
+        formData.append('entry.71148828', document.getElementById('girl-address-hi').value); // Girl Address HI
+        formData.append('entry.1183006253', document.getElementById('girl-pincode').value); // Girl Pincode
+        formData.append('entry.1828866283', document.getElementById('girl-mobile').value); // Girl Mobile
+        const marriageCenterEnInput = document.getElementById('marriage-center-en');
+        const marriageCenterSelect = document.getElementById('marriage-center-select');
+        formData.append('entry.1681870684', marriageCenterEnInput && marriageCenterEnInput.style.display === 'block' ? marriageCenterEnInput.value : marriageCenterSelect.value); // Marriage Center EN
+        formData.append('entry.557433377', document.getElementById('marriage-center-hi').value); // Marriage Center HI
+        formData.append('entry.1941537333', document.getElementById('marriage-date').value); // Marriage Date
+        formData.append('entry.1460908664', document.getElementById('witness1-relationship').value); // Who's Witness
+        formData.append('entry.726407772', document.getElementById('witness1-title').value); // Witness 1 Title
+        formData.append('entry.1961596780', document.getElementById('witness1-name-en').value); // Witness 1 Name EN
+        formData.append('entry.1492954725', document.getElementById('witness1-name-hi').value); // Witness 1 Name HI
+        formData.append('entry.856450008', document.getElementById('witness1-father-en').value); // Witness 1 Father EN
+        formData.append('entry.70503026', document.getElementById('witness1-father-hi').value); // Witness 1 Father HI
+        formData.append('entry.1389933248', document.getElementById('witness1-address-en').value); // Witness 1 Address EN
+        formData.append('entry.2091199383', document.getElementById('witness1-address-hi').value); // Witness 1 Address HI
+        formData.append('entry.279526494', document.getElementById('witness1-mobile').value); // Witness 1 Mobile
+        formData.append('entry.1752979492', document.getElementById('witness2-title').value); // Witness 2 Title
+        formData.append('entry.1223868514', document.getElementById('witness2-name-en').value); // Witness 2 Name EN
+        formData.append('entry.1024061180', document.getElementById('witness2-name-hi').value); // Witness 2 Name HI
+        formData.append('entry.1647365318', document.getElementById('witness2-father-en').value); // Witness 2 Father EN
+        formData.append('entry.1557810247', document.getElementById('witness2-father-hi').value); // Witness 2 Father HI
+        formData.append('entry.1760654142', document.getElementById('witness2-address-en').value); // Witness 2 Address EN
+        formData.append('entry.2008452782', document.getElementById('witness2-address-hi').value); // Witness 2 Address HI
+        formData.append('entry.283828399', document.getElementById('witness2-mobile').value); // Witness 2 Mobile
+
+        // Submit to Google Forms first
+        fetch('https://docs.google.com/forms/d/e/1FAIpQLSe8PFEx7kDCkCXuJ-_S7dYkCKkR9iFVOIXM68wODMGOhBSI6g/formResponse', {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors' // Required for Google Forms
+        })
+        .then(async (response) => {
+            // Google Forms always returns success with no-cors mode
+            console.log('Form submitted successfully');
+            statusDiv.textContent = 'Form submitted! Uploading files to Drive...';
+            
+            // Now upload files to Google Drive
+            try {
+                const driveResult = await uploadAllFilesToDrive();
+                if (driveResult === true) {
+                    statusDiv.textContent = 'Form submitted and files uploaded to Drive successfully!';
+                    statusDiv.style.backgroundColor = '#d4edda';
+                    statusDiv.style.color = '#155724';
+                    document.getElementById('marriageForm').reset();
+                } else if (driveResult === 'skipped') {
+                    statusDiv.textContent = 'Form submitted successfully! (Drive upload unavailable)';
+                    statusDiv.style.backgroundColor = '#d4edda';
+                    statusDiv.style.color = '#155724';
+                    document.getElementById('marriageForm').reset();
+                } else {
+                    statusDiv.textContent = 'Form submitted but Drive upload failed. Check console for details.';
+                    statusDiv.style.backgroundColor = '#fff3cd';
+                    statusDiv.style.color = '#856404';
+                    document.getElementById('marriageForm').reset();
+                }
+            } catch (error) {
+                console.error('Drive upload error:', error);
+                statusDiv.textContent = 'Form submitted successfully! (Drive upload failed)';
+                statusDiv.style.backgroundColor = '#d4edda';
+                statusDiv.style.color = '#155724';
+                document.getElementById('marriageForm').reset();
+            }
+        })
+        .catch(error => {
+            console.error('Error submitting form:', error);
+            statusDiv.textContent = 'Error submitting form. Please try again.';
+            statusDiv.style.backgroundColor = '#f8d7da';
+            statusDiv.style.color = '#721c24';
+        });
+    }
+    
     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('marriageForm');
+        console.log('DOM Content Loaded - setting up upload toggle...');
+        
+        // Suppress postMessage errors from Google APIs
+        const originalPostMessage = window.postMessage;
+        window.postMessage = function(message, targetOrigin, transfer) {
+            if (targetOrigin && targetOrigin.startsWith('file://')) {
+                return; // Suppress file:// postMessage errors
+            }
+            return originalPostMessage.call(this, message, targetOrigin, transfer);
+        };
+        
+        // Initialize Google Drive API
+        initGoogleDriveAPI();
+        // DD-MM-YYYY date formatting and validation
+        function formatDate(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '-' + value.slice(2);
+            }
+            if (value.length >= 5) {
+                value = value.slice(0, 5) + '-' + value.slice(5);
+            }
+            if (value.length > 10) {
+                value = value.slice(0, 10);
+            }
+            input.value = value;
+        }
+        
+        function validateDate(dateString) {
+            const regex = /^(\d{2})-(\d{2})-(\d{4})$/;
+            if (!regex.test(dateString)) return false;
+            
+            const [, day, month, year] = dateString.match(regex);
+            const date = new Date(year, month - 1, day);
+            
+            return date.getDate() === parseInt(day) && 
+                   date.getMonth() === parseInt(month) - 1 && 
+                   date.getFullYear() === parseInt(year);
+        }
+        
+        // Add date formatting to all date inputs
+        ['boy-dob', 'girl-dob', 'marriage-date'].forEach(id => {
+            const input = document.getElementById(id);
+            const picker = document.getElementById(id + '-picker');
+            if (input) {
+                input.addEventListener('input', () => formatDate(input));
+                input.addEventListener('blur', () => {
+                    if (input.value && !validateDate(input.value)) {
+                        input.style.backgroundColor = '#ffcccc';
+                        alert('Please enter a valid date in DD-MM-YYYY format');
+                    } else {
+                        input.style.backgroundColor = '';
+                    }
+                });
+            }
+            
+            // Sync date picker with text input and validate age requirements
+            if (picker) {
+                // Set max date for age validation
+                const today = new Date();
+                if (id === 'boy-dob') {
+                    // Boy must be 21+ years old
+                    const maxDate = new Date(today.getFullYear() - 21, today.getMonth(), today.getDate());
+                    picker.max = maxDate.toISOString().split('T')[0];
+                } else if (id === 'girl-dob') {
+                    // Girl must be 18+ years old  
+                    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+                    picker.max = maxDate.toISOString().split('T')[0];
+                } else if (id === 'marriage-date') {
+                    // Marriage date cannot be in the future
+                    picker.max = today.toISOString().split('T')[0];
+                }
+                
+                picker.addEventListener('change', function() {
+                    if (this.value) {
+                        const date = new Date(this.value);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const year = date.getFullYear();
+                        const formattedDate = `${day}-${month}-${year}`;
+                        input.value = formattedDate;
+                        input.dispatchEvent(new Event('change'));
+                    }
+                });
+            }
+        });
 
-        // 1. Auto-Uppercase & No Commas
-        document.querySelectorAll('input[type="text"]').forEach(input => {
+        async function autoTranslate(text, targetId) {
+            if (!text.trim()) return;
+            // Remove commas before sending to API
+            const cleanText = text.replace(/,/g, '');
+            const url = `https://translate.google.com/translate_a/single?client=gtx&sl=en&tl=hi&dt=t&q=${encodeURIComponent(cleanText)}&ie=UTF-8&oe=UTF-8`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Translation API not available');
+                }
+                const data = await response.json();
+                if (data && data[0] && data[0][0] && data[0][0][1]) {
+                    const translatedText = data[0][0][1];
+                    document.getElementById(targetId).value = translatedText;
+                }
+            } catch (error) {
+                console.log('Translation API not available - manual translation needed');
+                // Fallback: Basic Hindi translation for common terms
+                const basicTranslations = {
+                    'name': 'नाम',
+                    'address': 'पता',
+                    'mobile': 'मोबाइल',
+                    'father': 'पिता',
+                    'mother': 'माता',
+                    'male': 'पुरुष',
+                    'female': 'महिला',
+                    'unmarried': 'अविवाहित',
+                    'married': 'विवाहित'
+                };
+                
+                const lowerText = cleanText.toLowerCase();
+                let translated = '';
+                
+                for (const [english, hindi] of Object.entries(basicTranslations)) {
+                    if (lowerText.includes(english)) {
+                        translated = translated ? translated + ' ' + hindi : hindi;
+                    }
+                }
+                
+                if (translated) {
+                    document.getElementById(targetId).value = translated;
+                } else {
+                    // If no translation found, keep original text
+                    document.getElementById(targetId).value = cleanText;
+                }
+            }
+        }
+
+        
+        // Live timestamp update
+        function updateTimestamp() {
+            const now = new Date();
+            const unixTime = Math.floor(now.getTime() / 1000);
+            const milliseconds = now.getMilliseconds();
+            const timestampValue = unixTime + milliseconds.toString().padStart(3, '0');
+            const timestampElement = document.getElementById('timestamp');
+            
+            if (timestampElement) {
+                timestampElement.value = timestampValue;
+                console.log('Unix timestamp set to:', timestampValue);
+            } else {
+                console.error('Timestamp element not found!');
+            }
+        }
+        
+        // Camera capture function
+        function capturePhoto(inputId) {
+            const input = document.getElementById(inputId);
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        const video = document.createElement('video');
+                        video.srcObject = stream;
+                        video.play();
+                        
+                        const canvas = document.createElement('canvas');
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        
+                        const context = canvas.getContext('2d');
+                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        
+                        canvas.toBlob(function(blob) {
+                            const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(file);
+                            input.files = dataTransfer.files;
+                            
+                            // Trigger change event for preview
+                            const event = new Event('change', { bubbles: true });
+                            input.dispatchEvent(event);
+                        }, 'image/jpeg');
+                        
+                        // Clean up
+                        stream.getTracks().forEach(track => track.stop());
+                    })
+                    .catch(function(err) {
+                        console.error('Camera access denied:', err);
+                        alert('Camera access denied. Please use file upload instead.');
+                    });
+            } else {
+                alert('Camera not supported on this device. Please use file upload instead.');
+            }
+        }
+
+        // Wait for DOM to be ready, then set timestamp
+        updateTimestamp();
+
+        // Convert all text inputs to uppercase
+        const textInputs = document.querySelectorAll('input[type="text"]');
+        textInputs.forEach(input => {
             input.addEventListener('input', function() {
-                this.value = this.value.toUpperCase().replace(/,/g, '');
+                this.value = this.value.toUpperCase();
             });
         });
 
-        // 2. Age Calculation
-        document.getElementById('boy-dob').addEventListener('change', function() {
-            const age = Math.floor((new Date() - new Date(this.value)) / 31557600000);
-            document.getElementById('boy-age').value = age || 0;
+        // Pincode validation - only numbers and spaces allowed
+        document.getElementById('boy-pincode').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9\s]/g, '').slice(0, 6);
+        });
+        
+        const girlPincode = document.getElementById('girl-pincode');
+        if (girlPincode) {
+            girlPincode.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9\s]/g, '').slice(0, 6);
+            });
+        }
+
+        // Global rule: NO COMMAS allowed in any input box
+        const allInputs = document.querySelectorAll('input');
+        allInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value.includes(',')) {
+                    this.value = this.value.replace(/,/g, '');
+                    alert("Commas (,) are not allowed in any field.");
+                }
+            });
         });
 
-        // 3. Upload Toggle
+        // English to Hindi trigger
+        const enInputs = document.querySelectorAll('input[id$="-en"]');
+        enInputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                const targetId = this.id.replace('-en', '-hi');
+                autoTranslate(this.value, targetId);
+            });
+        });
+
+        // Auto-select girl's religion when boy's religion changes
+        document.getElementById('boy-religion').addEventListener('change', function() {
+            document.getElementById('girl-religion').value = this.value;
+        });
+
+        // Tehsil data and population functions - REMOVED (districts/tehsils deleted)
+
+        // Aadhaar image merging functionality
+        const boyAadhaarFront = document.getElementById('boy-aadhaar-upload');
+        const boyAadhaarBack = document.getElementById('boy-aadhaar-back-upload');
+        const girlAadhaarFront = document.getElementById('girl-aadhaar-upload');
+        const girlAadhaarBack = document.getElementById('girl-aadhaar-back-upload');
+        
+        function checkAndMergeAadhaar(frontInput, backInput, gender) {
+            if (frontInput.files.length > 0 && backInput.files.length > 0) {
+                setTimeout(() => handleAadhaarUpload(gender), 100);
+            }
+        }
+        
+        if (boyAadhaarFront) {
+            boyAadhaarFront.addEventListener('change', function() {
+                checkAndMergeAadhaar(boyAadhaarFront, boyAadhaarBack, 'boy');
+            });
+        }
+        
+        if (boyAadhaarBack) {
+            boyAadhaarBack.addEventListener('change', function() {
+                checkAndMergeAadhaar(boyAadhaarFront, boyAadhaarBack, 'boy');
+            });
+        }
+        
+        if (girlAadhaarFront) {
+            girlAadhaarFront.addEventListener('change', function() {
+                checkAndMergeAadhaar(girlAadhaarFront, girlAadhaarBack, 'girl');
+            });
+        }
+        
+        if (girlAadhaarBack) {
+            girlAadhaarBack.addEventListener('change', function() {
+                checkAndMergeAadhaar(girlAadhaarFront, girlAadhaarBack, 'girl');
+            });
+        }
+
+        // Conditional Witness 1 Affidavit upload based on relationship
+        const witness1Relationship = document.getElementById('witness1-relationship');
+        console.log('Found witness1-relationship:', witness1Relationship);
+        
+        if (witness1Relationship) {
+            witness1Relationship.addEventListener('change', function() {
+                console.log('WITNESS 1 RELATIONSHIP CHANGED TO:', this.value);
+                
+                const affidavitLabel = document.getElementById('witness1-affidavit-label');
+                const affidavitUpload = document.getElementById('witness1-affidavit-upload');
+                const affidavitButton = affidavitUpload ? affidavitUpload.nextElementSibling : null;
+                
+                console.log('Affidavit elements found:', {
+                    label: !!affidavitLabel,
+                    upload: !!affidavitUpload,
+                    button: !!affidavitButton
+                });
+                
+                if (this.value === 'OTHER') {
+                    console.log('SHOWING AFFIDAVIT UPLOAD FOR OTHER');
+                    if (affidavitLabel) {
+                        affidavitLabel.style.display = 'block';
+                        console.log('Label shown');
+                    }
+                    if (affidavitUpload) {
+                        affidavitUpload.style.display = 'block';
+                        affidavitUpload.required = true;
+                        console.log('Upload shown');
+                    }
+                    if (affidavitButton) {
+                        affidavitButton.style.display = 'block';
+                        console.log('Button shown');
+                    }
+                } else {
+                    console.log('HIDING AFFIDAVIT UPLOAD FOR NON-OTHER');
+                    if (affidavitLabel) affidavitLabel.style.display = 'none';
+                    if (affidavitUpload) {
+                        affidavitUpload.style.display = 'none';
+                        affidavitUpload.required = false;
+                    }
+                    if (affidavitButton) affidavitButton.style.display = 'none';
+                }
+            });
+        } else {
+            console.error('WITNESS 1 RELATIONSHIP ELEMENT NOT FOUND!');
+        }
+
+        // Toggle all upload fields based on Yes/No selection
         document.getElementById('upload-toggle').addEventListener('change', function() {
-            const display = this.value === 'No' ? 'none' : 'block';
-            document.querySelectorAll('.upload-field, .doc-upload, .cam-btn').forEach(el => {
-                el.style.display = display;
-                if (el.tagName === 'INPUT') el.required = (this.value === 'Yes');
-            });
+            console.log('Upload toggle changed to:', this.value);
+            
+            // Get ALL upload-related elements directly
+            const uploadElements = [
+                'boy-photo', 'girl-photo', 'witness1-photo', 'witness2-photo',
+                'boy-pan-upload', 'boy-aadhaar-upload', 'boy-aadhaar-back-upload', 'boy-marksheet-upload', 'boy-affidavit-upload',
+                'girl-pan-upload', 'girl-aadhaar-upload', 'girl-aadhaar-back-upload', 'girl-marksheet-upload', 'girl-affidavit-upload',
+                'marriage-certificate-upload', 'witness1-proof-upload', 'witness1-affidavit-upload', 'witness2-proof-upload'
+            ];
+            
+            // Get all upload-related fieldsets only
+            const uploadFieldsets = ['boy-uploads', 'girl-uploads', 'witness-uploads', 'marriage-uploads'];
+            
+            if (this.value === 'No') {
+                console.log('HIDING ALL UPLOAD FIELDS');
+                
+                // Hide each upload input and its associated elements
+                uploadElements.forEach(elementId => {
+                    const input = document.getElementById(elementId);
+                    if (input) {
+                        input.style.display = 'none';
+                        input.required = false;
+                        console.log('Hidden:', elementId);
+                    }
+                    
+                    // Hide the label before this input
+                    const prevElement = input ? input.previousElementSibling : null;
+                    if (prevElement && prevElement.tagName === 'LABEL') {
+                        prevElement.style.display = 'none';
+                    }
+                    
+                    // Hide camera button after this input
+                    const nextElement = input ? input.nextElementSibling : null;
+                    if (nextElement && nextElement.tagName === 'BUTTON') {
+                        nextElement.style.display = 'none';
+                    }
+                    
+                    // Hide preview images
+                    const previewId = elementId.replace('-upload', '-photo-preview');
+                    const preview = document.getElementById(previewId);
+                    if (preview) {
+                        preview.style.display = 'none';
+                    }
+                });
+                
+                // Hide all photo previews by ID
+                ['boy-photo-preview', 'girl-photo-preview', 'witness1-photo-preview', 'witness2-photo-preview'].forEach(previewId => {
+                    const preview = document.getElementById(previewId);
+                    if (preview) preview.style.display = 'none';
+                });
+                
+                                
+            } else if (this.value === 'Yes') {
+                console.log('SHOWING ALL UPLOAD FIELDS');
+                
+                // Show each upload input and its associated elements
+                uploadElements.forEach(elementId => {
+                    const input = document.getElementById(elementId);
+                    if (input) {
+                        input.style.display = 'block';
+                        // Set required based on original requirements
+                        if (!elementId.includes('aadhaar-back') && !(elementId === 'witness1-affidavit-upload')) {
+                            input.required = true;
+                        }
+                        console.log('Shown:', elementId);
+                    }
+                    
+                    // Show the label before this input
+                    const prevElement = input ? input.previousElementSibling : null;
+                    if (prevElement && prevElement.tagName === 'LABEL') {
+                        prevElement.style.display = 'block';
+                    }
+                    
+                    // Show camera button after this input
+                    const nextElement = input ? input.nextElementSibling : null;
+                    if (nextElement && nextElement.tagName === 'BUTTON') {
+                        nextElement.style.display = 'block';
+                    }
+                });
+                
+                // Show photo previews
+                ['boy-photo-preview', 'girl-photo-preview', 'witness1-photo-preview', 'witness2-photo-preview'].forEach(previewId => {
+                    const preview = document.getElementById(previewId);
+                    if (preview) preview.style.display = 'block';
+                });
+                
+                                
+                // Handle witness1 affidavit special case
+                const witness1Relationship = document.getElementById('witness1-relationship').value;
+                const affidavitLabel = document.getElementById('witness1-affidavit-label');
+                const affidavitUpload = document.getElementById('witness1-affidavit-upload');
+                const affidavitButton = affidavitUpload ? affidavitUpload.nextElementSibling : null;
+                
+                if (witness1Relationship !== 'Other' && affidavitLabel && affidavitUpload && affidavitButton) {
+                    affidavitLabel.style.display = 'none';
+                    affidavitUpload.style.display = 'none';
+                    affidavitButton.style.display = 'none';
+                    affidavitUpload.required = false;
+                }
+            }
         });
 
-        // 4. Set Initial Timestamp
-        document.getElementById('timestamp').value = Date.now();
+        // Conditional hiding of district and tehsil based on address type - REMOVED (districts/tehsils deleted)
 
-        // 5. Submit Handling
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const status = document.getElementById('status-message');
-            status.style.display = 'block';
-            status.textContent = 'Processing Submission...';
-            status.style.backgroundColor = '#fff3cd';
+        function calculateAge(dob, ageId) {
+            if (!dob || !validateDate(dob)) return;
+            
+            const today = new Date();
+            const [, day, month, year] = dob.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+            const birthDate = new Date(year, month - 1, day);
+            
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            const ageInput = document.getElementById(ageId);
+            ageInput.value = age;
+            
+            // Age validation
+            ageInput.style.backgroundColor = '';
+            
+            if (ageId === 'boy-age') {
+                if (age < 21) {
+                    ageInput.style.backgroundColor = '#ffcccc';
+                    ageInput.title = 'Boy must be 21 years or older';
+                    alert('Boy must be 21 years or older for marriage registration!');
+                    // Clear the DOB field and age
+                    document.getElementById('boy-dob').value = '';
+                    ageInput.value = '';
+                    document.getElementById('boy-dob').focus();
+                } else {
+                    ageInput.title = 'Age valid (21+)';
+                }
+            } else if (ageId === 'girl-age') {
+                if (age < 18) {
+                    ageInput.style.backgroundColor = '#ffcccc';
+                    ageInput.title = 'Girl must be 18 years or older';
+                    alert('Girl must be 18 years or older for marriage registration!');
+                    // Clear the DOB field and age
+                    document.getElementById('girl-dob').value = '';
+                    ageInput.value = '';
+                    document.getElementById('girl-dob').focus();
+                } else {
+                    ageInput.title = 'Age valid (18+)';
+                }
+            }
+        }
 
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            data.timestamp = document.getElementById('timestamp').value;
+        document.getElementById('boy-dob').addEventListener('change', function() {
+            calculateAge(this.value, 'boy-age');
+        });
 
-            fetch('https://script.google.com/macros/s/AKfycbzrcsM_oCV-0A-Of37VaCfvE14wAl_3l4ulhN_KUz7xyyi8Yyy5rZ-s-AseNvvgc3Z57Q/exec', {
-                method: 'POST',
-                body: new URLSearchParams(data),
-                mode: 'no-cors' // Use no-cors if you get redirect errors with Apps Script
-            })
-            .then(() => {
-                status.textContent = 'Success! Data sent to Google Sheets.';
-                status.style.backgroundColor = '#d4edda';
-                status.style.color = '#155724';
-                form.reset();
-            })
-            .catch(err => {
-                status.textContent = 'Error: ' + err.message;
-                status.style.backgroundColor = '#f8d7da';
+        document.getElementById('girl-dob').addEventListener('change', function() {
+            calculateAge(this.value, 'girl-age');
+        });
+
+        // Image preview functions
+        function previewImage(inputId, previewId) {
+            const fileInput = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            fileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.src = '';
+                    preview.style.display = 'none';
+                }
             });
+        }
+
+        previewImage('boy-photo', 'boy-photo-preview');
+        previewImage('girl-photo', 'girl-photo-preview');
+        previewImage('witness1-photo', 'witness1-photo-preview');
+        previewImage('witness2-photo', 'witness2-photo-preview');
+
+        // Debug submit button
+        console.log('Form element:', document.getElementById('marriageForm'));
+        console.log('Submit button:', document.querySelector('input[type="submit"]'));
+
+        // Review Modal Functions
+        function showReviewModal() {
+            const modal = document.getElementById('reviewModal');
+            const reviewContent = document.getElementById('reviewContent');
+            
+            // Collect all form data
+            const formData = {
+                timestamp: document.getElementById('timestamp').value,
+                adv_name: document.getElementById('adv-name').value,
+                address_type: document.getElementById('address-type').value,
+                upload_toggle: document.getElementById('upload-toggle').value,
+                sadar_select: document.getElementById('sadar-select').value,
+                boy_name_en: document.getElementById('boy-name-en').value,
+                boy_name_hi: document.getElementById('boy-name-hi').value,
+                boy_mother_en: document.getElementById('boy-mother-en').value,
+                boy_mother_hi: document.getElementById('boy-mother-hi').value,
+                boy_father_en: document.getElementById('boy-father-en').value,
+                boy_father_hi: document.getElementById('boy-father-hi').value,
+                boy_dob: document.getElementById('boy-dob').value,
+                boy_age: document.getElementById('boy-age').value,
+                boy_marriage_status: document.getElementById('boy-marriage-status').value,
+                boy_religion: document.getElementById('boy-religion').value,
+                boy_address_en: document.getElementById('boy-address-en').value,
+                boy_address_hi: document.getElementById('boy-address-hi').value,
+                boy_pincode: document.getElementById('boy-pincode').value,
+                boy_mobile: document.getElementById('boy-mobile').value,
+                girl_name_en: document.getElementById('girl-name-en').value,
+                girl_name_hi: document.getElementById('girl-name-hi').value,
+                girl_mother_en: document.getElementById('girl-mother-en').value,
+                girl_mother_hi: document.getElementById('girl-mother-hi').value,
+                girl_father_en: document.getElementById('girl-father-en').value,
+                girl_father_hi: document.getElementById('girl-father-hi').value,
+                girl_dob: document.getElementById('girl-dob').value,
+                girl_age: document.getElementById('girl-age').value,
+                girl_marriage_status: document.getElementById('girl-marriage-status').value,
+                girl_religion: document.getElementById('girl-religion').value,
+                girl_address_en: document.getElementById('girl-address-en').value,
+                girl_address_hi: document.getElementById('girl-address-hi').value,
+                girl_pincode: document.getElementById('girl-pincode').value,
+                girl_mobile: document.getElementById('girl-mobile').value,
+                marriage_center_en: document.getElementById('marriage-center-en').value,
+                marriage_center_hi: document.getElementById('marriage-center-hi').value,
+                marriage_date: document.getElementById('marriage-date').value,
+                witness1_relationship: document.getElementById('witness1-relationship').value,
+                witness1_title: document.getElementById('witness1-title').value,
+                witness1_name_en: document.getElementById('witness1-name-en').value,
+                witness1_name_hi: document.getElementById('witness1-name-hi').value,
+                witness1_father_en: document.getElementById('witness1-father-en').value,
+                witness1_father_hi: document.getElementById('witness1-father-hi').value,
+                witness1_address_en: document.getElementById('witness1-address-en').value,
+                witness1_mobile: document.getElementById('witness1-mobile').value,
+                witness2_title: document.getElementById('witness2-title').value,
+                witness2_name_en: document.getElementById('witness2-name-en').value,
+                witness2_name_hi: document.getElementById('witness2-name-hi').value,
+                witness2_father_en: document.getElementById('witness2-father-en').value,
+                witness2_father_hi: document.getElementById('witness2-father-hi').value,
+                witness2_address_en: document.getElementById('witness2-address-en').value,
+                witness2_mobile: document.getElementById('witness2-mobile').value
+            };
+            
+            // Generate review HTML
+            let reviewHTML = `
+                <div class="review-section">
+                    <h3>📝 Basic Information</h3>
+                    <div class="review-row"><span class="review-label">Timestamp:</span><span class="review-value">${formData.timestamp}</span></div>
+                    <div class="review-row"><span class="review-label">ADV Name:</span><span class="review-value">${formData.adv_name}</span></div>
+                    <div class="review-row"><span class="review-label">Address Type:</span><span class="review-value">${formData.address_type}</span></div>
+                    <div class="review-row"><span class="review-label">Upload Documents:</span><span class="review-value">${formData.upload_toggle}</span></div>
+                    <div class="review-row"><span class="review-label">Sadar:</span><span class="review-value">${formData.sadar_select}</span></div>
+                </div>
+                
+                <div class="review-section">
+                    <h3>👦 Boy's Details</h3>
+                    <div class="review-row"><span class="review-label">Name (EN):</span><span class="review-value">${formData.boy_name_en}</span></div>
+                    <div class="review-row"><span class="review-label">Name (HI):</span><span class="review-value">${formData.boy_name_hi}</span></div>
+                    <div class="review-row"><span class="review-label">Mother (EN):</span><span class="review-value">${formData.boy_mother_en}</span></div>
+                    <div class="review-row"><span class="review-label">Mother (HI):</span><span class="review-value">${formData.boy_mother_hi}</span></div>
+                    <div class="review-row"><span class="review-label">Father (EN):</span><span class="review-value">${formData.boy_father_en}</span></div>
+                    <div class="review-row"><span class="review-label">Father (HI):</span><span class="review-value">${formData.boy_father_hi}</span></div>
+                    <div class="review-row"><span class="review-label">DOB:</span><span class="review-value">${formData.boy_dob}</span></div>
+                    <div class="review-row"><span class="review-label">Age:</span><span class="review-value">${formData.boy_age}</span></div>
+                    <div class="review-row"><span class="review-label">Marriage Status:</span><span class="review-value">${formData.boy_marriage_status}</span></div>
+                    <div class="review-row"><span class="review-label">Religion:</span><span class="review-value">${formData.boy_religion}</span></div>
+                    <div class="review-row"><span class="review-label">Address (EN):</span><span class="review-value">${formData.boy_address_en}</span></div>
+                    <div class="review-row"><span class="review-label">Address (HI):</span><span class="review-value">${formData.boy_address_hi}</span></div>
+                    <div class="review-row"><span class="review-label">Pincode:</span><span class="review-value">${formData.boy_pincode}</span></div>
+                    <div class="review-row"><span class="review-label">Mobile:</span><span class="review-value">${formData.boy_mobile}</span></div>
+                </div>
+                
+                <div class="review-section">
+                    <h3>👧 Girl's Details</h3>
+                    <div class="review-row"><span class="review-label">Name (EN):</span><span class="review-value">${formData.girl_name_en}</span></div>
+                    <div class="review-row"><span class="review-label">Name (HI):</span><span class="review-value">${formData.girl_name_hi}</span></div>
+                    <div class="review-row"><span class="review-label">Mother (EN):</span><span class="review-value">${formData.girl_mother_en}</span></div>
+                    <div class="review-row"><span class="review-label">Mother (HI):</span><span class="review-value">${formData.girl_mother_hi}</span></div>
+                    <div class="review-row"><span class="review-label">Father (EN):</span><span class="review-value">${formData.girl_father_en}</span></div>
+                    <div class="review-row"><span class="review-label">Father (HI):</span><span class="review-value">${formData.girl_father_hi}</span></div>
+                    <div class="review-row"><span class="review-label">DOB:</span><span class="review-value">${formData.girl_dob}</span></div>
+                    <div class="review-row"><span class="review-label">Age:</span><span class="review-value">${formData.girl_age}</span></div>
+                    <div class="review-row"><span class="review-label">Marriage Status:</span><span class="review-value">${formData.girl_marriage_status}</span></div>
+                    <div class="review-row"><span class="review-label">Religion:</span><span class="review-value">${formData.girl_religion}</span></div>
+                    <div class="review-row"><span class="review-label">Address (EN):</span><span class="review-value">${formData.girl_address_en}</span></div>
+                    <div class="review-row"><span class="review-label">Address (HI):</span><span class="review-value">${formData.girl_address_hi}</span></div>
+                    <div class="review-row"><span class="review-label">Pincode:</span><span class="review-value">${formData.girl_pincode}</span></div>
+                    <div class="review-row"><span class="review-label">Mobile:</span><span class="review-value">${formData.girl_mobile}</span></div>
+                </div>
+                
+                <div class="review-section">
+                    <h3>💒 Marriage Details</h3>
+                    <div class="review-row"><span class="review-label">Center (EN):</span><span class="review-value">${formData.marriage_center_en}</span></div>
+                    <div class="review-row"><span class="review-label">Center (HI):</span><span class="review-value">${formData.marriage_center_hi}</span></div>
+                    <div class="review-row"><span class="review-label">Date:</span><span class="review-value">${formData.marriage_date}</span></div>
+                </div>
+                
+                <div class="review-section">
+                    <h3>👥 Witness Details</h3>
+                    <div class="review-row"><span class="review-label">Who's Witness:</span><span class="review-value">${formData.witness1_relationship}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 1 Title:</span><span class="review-value">${formData.witness1_title}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 1 Name (EN):</span><span class="review-value">${formData.witness1_name_en}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 1 Name (HI):</span><span class="review-value">${formData.witness1_name_hi}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 1 Father (EN):</span><span class="review-value">${formData.witness1_father_en}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 1 Father (HI):</span><span class="review-value">${formData.witness1_father_hi}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 1 Address:</span><span class="review-value">${formData.witness1_address_en}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 1 Mobile:</span><span class="review-value">${formData.witness1_mobile}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 2 Title:</span><span class="review-value">${formData.witness2_title}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 2 Name (EN):</span><span class="review-value">${formData.witness2_name_en}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 2 Name (HI):</span><span class="review-value">${formData.witness2_name_hi}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 2 Father (EN):</span><span class="review-value">${formData.witness2_father_en}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 2 Father (HI):</span><span class="review-value">${formData.witness2_father_hi}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 2 Address:</span><span class="review-value">${formData.witness2_address_en}</span></div>
+                    <div class="review-row"><span class="review-label">Witness 2 Mobile:</span><span class="review-value">${formData.witness2_mobile}</span></div>
+                </div>
+            `;
+            
+            reviewContent.innerHTML = reviewHTML;
+            modal.style.display = 'block';
+        }
+        
+                
+                
+        // Marriage center dropdown functionality
+        const marriageCenterSelect = document.getElementById('marriage-center-select');
+        const marriageCenterEnInput = document.getElementById('marriage-center-en');
+        
+        if (marriageCenterSelect && marriageCenterEnInput) {
+            marriageCenterSelect.addEventListener('change', function() {
+                if (this.value === 'OTHER') {
+                    marriageCenterEnInput.style.display = 'block';
+                    marriageCenterEnInput.required = true;
+                    marriageCenterEnInput.value = '';
+                } else {
+                    marriageCenterEnInput.style.display = 'none';
+                    marriageCenterEnInput.required = false;
+                    marriageCenterEnInput.value = this.value;
+                }
+            });
+            
+            // Add translation to marriage center dropdown
+            marriageCenterSelect.addEventListener('change', async function() {
+                if (this.value && this.value !== 'OTHER') {
+                    // Translate dropdown selection to Hindi
+                    await autoTranslate(this.value, 'marriage-center-hi');
+                }
+            });
+        }
+
+        // Witness 1 auto-fill functionality
+        const witness1NameSelect = document.getElementById('witness1-name-select');
+        const witness1Data = {
+            'Vipin Tyagi': {
+                name_en: 'Vipin Tyagi',
+                name_hi: 'विपिन त्यागी',
+                father_en: 'Faruq',
+                father_hi: 'फारूक',
+                address_en: 'H No Ff25 Gali No 7 Budh Bazar Vijay Nagar Sain Vihar Ghaziabad Uttar Pradesh 201001',
+                address_hi: 'एच नं एफएफ25 गली नं 7 बुध बाजार विजय नगर सैन विहार गाजियाबाद उत्तर प्रदेश 201001',
+                mobile: '9800000000'
+            },
+            'Mahipal': {
+                name_en: 'Mahipal',
+                name_hi: 'महिपाल',
+                father_en: 'Faruq',
+                father_hi: 'फारूक',
+                address_en: 'House No 939 Kaila Bhatta Ghaziabad Uttar Pradesh 201001',
+                address_hi: 'हाउस नं 939 कैला भट्टा गाजियाबाद उत्तर प्रदेश 201001',
+                mobile: '9800000000'
+            },
+            'Mohd Furqan': {
+                name_en: 'Mohd Furqan',
+                name_hi: 'मोहम्मद फुरकान',
+                father_en: 'Faruq',
+                father_hi: 'फारूक',
+                address_en: 'House No 939 Kaila Bhatta Ghaziabad Uttar Pradesh 201001',
+                address_hi: 'हाउस नं 939 कैला भट्टा गाजियाबाद उत्तर प्रदेश 201001',
+                mobile: '9800000000'
+            },
+            'Dharmraj': {
+                name_en: 'Dharmraj',
+                name_hi: 'धर्मराज',
+                father_en: 'nandi',
+                father_hi: 'नंदी',
+                address_en: '90 Arya Samaj Mandir Tilpata Karanwas Tilpata Karanwas Gautam Buddha Nagar Uttar Pradesh',
+                address_hi: '90 आर्य समाज मंदिर तिलपटा करनवास तिलपटा करनवास गौतम बुद्ध नगर उत्तर प्रदेश',
+                mobile: '9800000000'
+            },
+            'Raju': {
+                name_en: 'Raju',
+                name_hi: 'राजू',
+                father_en: 'Manoj',
+                father_hi: 'मनोज',
+                address_en: 'Santoshpur Punia Etawah Uttar Pradesh 206123',
+                address_hi: 'संतोषपुर पुनिया इटावा उत्तर प्रदेश 206123',
+                mobile: '9800000000'
+            },
+            'Muhammad Asad': {
+                name_en: 'Muhammad Asad',
+                name_hi: 'मुहम्मद असद',
+                father_en: 'asad',
+                father_hi: 'असद',
+                address_en: '252 Sector 9 Vijay Nagar Ghaziabad Uttar Pradesh 201009',
+                address_hi: '252 सेक्टर 9 विजय नगर गाजियाबाद उत्तर प्रदेश 201009',
+                mobile: '9800000000'
+            },
+            'Brajesh Kumar': {
+                name_en: 'Brajesh Kumar',
+                name_hi: 'ब्रजेश कुमार',
+                father_en: 'pankaj',
+                father_hi: 'पंकज',
+                address_en: '117 A Sec 10 Vasundhara Ghaziabad Uttar Pradesh 201001',
+                address_hi: '117 ए सेक 10 वसुंधरा गाजियाबाद उत्तर प्रदेश 201001',
+                mobile: '9800000000'
+            }
+        };
+        
+        if (witness1NameSelect) {
+            witness1NameSelect.addEventListener('change', function() {
+                const selectedName = this.value;
+                if (selectedName && witness1Data[selectedName]) {
+                    const data = witness1Data[selectedName];
+                    
+                    // Auto-fill all witness 1 fields
+                    document.getElementById('witness1-name-en').value = data.name_en;
+                    document.getElementById('witness1-name-hi').value = data.name_hi;
+                    document.getElementById('witness1-father-en').value = data.father_en;
+                    document.getElementById('witness1-father-hi').value = data.father_hi;
+                    document.getElementById('witness1-address-en').value = data.address_en;
+                    document.getElementById('witness1-address-hi').value = data.address_hi || '';
+                    document.getElementById('witness1-mobile').value = data.mobile;
+                    
+                    console.log('Witness 1 auto-filled:', selectedName);
+                }
+            });
+        }
+        
+        // Allow manual editing of auto-filled witness 1 fields
+        const witness1Fields = ['witness1-name-en', 'witness1-name-hi', 'witness1-father-en', 'witness1-father-hi', 'witness1-address-en', 'witness1-address-hi', 'witness1-mobile'];
+        witness1Fields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.addEventListener('input', function() {
+                    // Clear witness 1 name selection when field is manually edited
+                    if (witness1NameSelect) {
+                        witness1NameSelect.value = '';
+                    }
+                    console.log('Witness 1 field manually edited:', fieldId);
+                });
+            }
+        });
+
+        // Form submission to Google Sheets
+        document.getElementById('marriageForm').addEventListener('submit', function(e) {
+            console.log('Form submission started!');
+            e.preventDefault();
+            showReviewModal();
         });
     });
 </script>
+
 </body>
 </html>
