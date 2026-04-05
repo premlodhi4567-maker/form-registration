@@ -572,12 +572,6 @@
         // Debug submit button
         console.log('Form element:', document.getElementById('marriageForm'));
         console.log('Submit button:', document.querySelector('input[type="submit"]'));
-        
-        // Test submit button directly
-        document.querySelector('input[type="submit"]').addEventListener('click', function(e) {
-            console.log('Submit button clicked!');
-            alert('Submit button is working!');
-        });
 
         // Form submission to Google Sheets
         document.getElementById('marriageForm').addEventListener('submit', function(e) {
@@ -597,7 +591,7 @@
             });
             
             // Send to Google Apps Script Web App
-            fetch('https://script.google.com/macros/s/AKfycbxqupXoKuyNTKcqP0LiMAJSSzSDaLg-doths-t7t4WDyfMfaLyotlfWCM9tKSIM53R1UA/exec', {
+            fetch('https://script.google.com/macros/s/AKfycbzm7gQt4MT7DyfLRQgWAETdqLPn84L11-BaQoog30jeE2tY3tYPWYWgY-n4d7hcrNck0w/exec', {
                 method: 'POST',
                 body: new URLSearchParams({
                     timestamp: document.getElementById('timestamp').value,
@@ -668,25 +662,33 @@
                 }
             })
             .catch(error => {
-                console.error('Fetch error:', error);
-                console.error('Error details:', {
-                    message: error.message,
-                    status: error.status,
-                    statusText: error.statusText,
-                    url: 'YOUR_NEW_WEB_APP_URL_HERE'
-                });
-                statusDiv.textContent = 'Network error: ' + error.message + ' (Check console for details)';
+                console.error('Full error object:', error);
+                console.error('Error type:', typeof error);
+                console.error('Error message:', error.message);
+                console.error('Error status:', error.status);
+                console.error('Error statusText:', error.statusText);
+                
+                statusDiv.textContent = 'Error: ' + error.message;
                 statusDiv.style.backgroundColor = '#f8d7da';
                 statusDiv.style.color = '#721c24';
                 
-                // Show detailed error information
+                // Show specific error type
                 if (error.status === 0) {
-                    statusDiv.innerHTML = 'Error: Unable to connect to Google Apps Script. Please check:<br>' +
-                        '1. Script is properly deployed as Web App<br>' +
+                    statusDiv.innerHTML = '<strong>Connection Failed</strong><br>' +
+                        'Google Apps Script URL may be incorrect or not deployed as Web App.<br>' +
+                        'Please check:<br>' +
+                        '1. Script deployed as Web App (not just saved)<br>' +
                         '2. Development mode is OFF<br>' +
-                        '3. Permissions are granted<br>' +
+                        '3. "Anyone, even anonymous" access<br>' +
                         '4. URL is correct in HTML file<br>' +
-                        '<small>Check browser console (F12) for more details</small>';
+                        '<small>Open browser console (F12) for details</small>';
+                } else if (error.status === 403) {
+                    statusDiv.innerHTML = '<strong>Permission Denied</strong><br>' +
+                        'Google Apps Script needs permission to access your Sheet.<br>' +
+                        'Submit form once and grant permissions when prompted.';
+                } else if (error.status === 404) {
+                    statusDiv.innerHTML = '<strong>Not Found</strong><br>' +
+                        'Google Apps Script URL is incorrect or deployment failed.';
                 }
             });
         });
