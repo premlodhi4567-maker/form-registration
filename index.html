@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marriage Registration Form - No Commas</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f0f2f5; line-height: 1.6; background-image: url('https://images.unsplash.com/photo-1519225423996-6d5e8d5f8d3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; }      h1 { text-align: center; color: #1a73e8; font-size: 24px; }
+        form { max-width: 900px; margin: auto; background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); backdrop-filter: blur(5px); }
+        @media (max-width: 768px) {
+            form { padding: 10px; margin: 10px; }
+            .row { flex-direction: column; gap: 10px; }
+            .col { width: 100%; }
+            input, select { font-size: 16px; }
+            h1 { font-size: 20px; }
+        }
+        fieldset { border: 1px solid #e0e0e0; margin-bottom: 25px; padding: 20px; border-radius: 8px; }
+        legend { font-weight: bold; color: #1a73e8; padding: 0 10px; }
+        .boy-details { background-color: #e3f2fd; }
+        .girl-details { background-color: #f3e5f5; }
+        .marriage-details { background-color: #e8f5e8; }
+        .witness-details { background-color: #fff3e0; }
+        .address-selection { margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #ddd; }
+        label { font-weight: 600; display: block; margin-top: 15px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        input[type="submit"] { background-color: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 20px; }
+        input[type="submit"]:hover { background-color: #0056b3; }
+        input[type="submit"]:active { background-color: #004085; }
+        input:required:invalid, select:required:invalid { background-color: #ffcccc; } /* light red for unfilled required */
+        input:required:valid, select:required:valid { background-color: #ccffcc; } /* light green for filled required */
+        input[readonly] { background-color: #ccffcc; } /* light green for readonly age fields */
+        input[id$="-hi"] { background-color: #ffa500; border: 1px solid #f1c40f; }
+        .row { display: flex; gap: 15px; }
+        .col { flex: 1; }
+        .address-selection { margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #ddd; }
+        .address-selection label { display: block; margin-bottom: 10px; font-weight: normal; }
+        .address-selection input, .address-selection select { width: 100%; margin-bottom: 10px; }
+        @media (max-width: 768px) {
+            .address-selection { padding: 10px; }
+            .address-selection label { font-size: 16px; }
+            .address-selection input, .address-selection select { font-size: 16px; }
+        }
+        .upload-selection { margin-bottom: 20px; padding: 15px; background-color: #fff3cd; border-radius: 8px; border: 1px solid #ddd; }
+        .upload-selection label { display: inline-block; margin-right: 20px; font-weight: normal; }
+        .sadar-selection { margin-bottom: 20px; padding: 15px; background-color: #e7f3ff; border-radius: 8px; border: 1px solid #ddd; }
+        .sadar-selection label { display: inline-block; margin-right: 20px; font-weight: normal; }
+        .timestamp-section { margin-bottom: 20px; padding: 15px; background-color: #e8f4f8; border-radius: 8px; border: 1px solid #ddd; }
+        .timestamp-section input { background-color: #d4edda; font-weight: bold; text-align: center; }
+        .terms-section { margin-top: 40px; padding: 30px; background: rgba(248, 249, 250, 0.95); border-radius: 8px; border: 1px solid #ddd; backdrop-filter: blur(5px); }
+        .terms-section h2 { color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 10px; }
+        .terms-section h3 { color: #333; margin-top: 20px; margin-bottom: 10px; }
+        .terms-section ul { margin-left: 20px; }
+        .terms-section li { margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>Registration Form</h1>
+    
+    <div class="timestamp-section">
+        <input type="text" id="timestamp" readonly style="width: 200px; margin: 0 auto; display: block;">
+    </div>
+    
+    <div class="address-selection">
+        <label>ADV Name:</label>
+        <input type="text" id="adv-name" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
+        <label style="display: inline-block; margin-right: 20px; font-weight: normal;">Address Type:</label>
+        <select id="address-type" required>
+            <option selected></option>
+            <option>Boy Address</option>
+            <option>Girl Address</option>
+            <option>Marriage Address</option>
+        </select>
+    </div>
+    
+    <div class="upload-selection">
+        <label>Do you want Upload the documents ?</label>
+        <select id="upload-toggle" required>
+            <option selected></option>
+            <option>Yes</option>
+            <option>No</option>
+        </select>
+    </div>
+    
+    <div class="sadar-selection">
+        <label>Please Select Your Sadar:</label>
+        <select id="sadar-select" required>
+            <option selected></option>
+            <option>Sadar First</option>
+            <option>Sadar Second</option>
+            <option>Sadar Third</option>
+            <option>Sadar Fourth</option>
+            <option>Sadar Fifth</option>
+        </select>
+    </div>
+    
+    <fieldset class="boy-details">
+        <legend>Boy's Details</legend>
+        <label>Boy's Photo:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-photo" accept="image/*" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('boy-photo')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <img id="boy-photo-preview" style="max-width: 200px; display: none;"><br><br>
+        <div class="row">
+            <div class="col"><label>Boy Name (EN):</label><input type="text" id="boy-name-en" required></div>
+            <div class="col"><label>Boy Name (HI):</label><input type="text" id="boy-name-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Mother Name (EN):</label><input type="text" id="boy-mother-en" required></div>
+            <div class="col"><label>Mother Name (HI):</label><input type="text" id="boy-mother-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Father Name (EN):</label><input type="text" id="boy-father-en" required></div>
+            <div class="col"><label>Father Name (HI):</label><input type="text" id="boy-father-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Boy DOB:</label><input type="date" id="boy-dob" required></div>
+            <div class="col"><label>Age:</label><input type="text" id="boy-age" readonly></div>
+        </div>
+        <label>Religion:</label><select id="boy-religion" required><option selected></option><option>हिन्दू धर्म (Hinduism)</option><option>इस्लाम धर्म (Islam)</option><option>सिख धर्म (Sikhism)</option><option>ईसाई धर्म (Christianity)</option><option>जैन धर्म (Jainism)</option><option>बौद्ध धर्म (Buddhism)</option><option>पारसी धर्म (Parsi)</option><option>अंतर्धार्मिक / धर्मनिरपेक्ष (Interfaith / Secular)</option></select>
+        <div class="row">
+            <div class="col"><label>Address (EN):</label><input type="text" id="boy-address-en" required></div>
+            <div class="col"><label>Address (HI):</label><input type="text" id="boy-address-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Pincode:</label><input type="text" id="boy-pincode" maxlength="6" required></div>
+            <div class="col"><label>Mobile:</label><input type="tel" id="boy-mobile" maxlength="10" required value="9800000000"></div>
+        </div>
+        <label>Boy's Pan Card Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-pan-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('boy-pan-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label>Boy's Aadhaar Card Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-aadhaar-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('boy-aadhaar-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label>Boy's Aadhaar Card Back Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-aadhaar-back-upload" accept=".pdf,.jpg,.png,.jpeg">
+            <button type="button" onclick="capturePhoto('boy-aadhaar-back-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label>Boy's Marksheet Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-marksheet-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('boy-marksheet-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label>Boy's Affidavit Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="boy-affidavit-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('boy-affidavit-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+    </fieldset>
+
+    <fieldset class="girl-details">
+        <legend>Girl's Details</legend>
+        <label>Girl's Photo:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-photo" accept="image/*" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('girl-photo')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <img id="girl-photo-preview" style="max-width: 200px; display: none;"><br><br>
+        <div class="row">
+            <div class="col"><label>Girl Name (EN):</label><input type="text" id="girl-name-en" required></div>
+            <div class="col"><label>Girl Name (HI):</label><input type="text" id="girl-name-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Mother (EN):</label><input type="text" id="girl-mother-en" required></div>
+            <div class="col"><label>Mother (HI):</label><input type="text" id="girl-mother-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Father (EN):</label><input type="text" id="girl-father-en" required></div>
+            <div class="col"><label>Father (HI):</label><input type="text" id="girl-father-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Girl DOB:</label><input type="date" id="girl-dob" required></div>
+            <div class="col"><label>Age:</label><input type="text" id="girl-age" readonly></div>
+        </div>
+        <label>Religion:</label><select id="girl-religion" required><option selected></option><option>हिन्दू धर्म (Hinduism)</option><option>इस्लाम धर्म (Islam)</option><option>सिख धर्म (Sikhism)</option><option>ईसाई धर्म (Christianity)</option><option>जैन धर्म (Jainism)</option><option>बौद्ध धर्म (Buddhism)</option><option>पारसी धर्म (Parsi)</option><option>अंतर्धार्मिक / धर्मनिरपेक्ष (Interfaith / Secular)</option></select>
+        <div class="row">
+            <div class="col"><label>Address (EN):</label><input type="text" id="girl-address-en" required></div>
+            <div class="col"><label>Address (HI):</label><input type="text" id="girl-address-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Pincode:</label><input type="text" id="girl-pincode" maxlength="6" required></div>
+            <div class="col"><label>Mobile:</label><input type="tel" id="girl-mobile" maxlength="10" required value="9800000000"></div>
+        </div>
+        <label>Girl's Pan Card Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-pan-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('girl-pan-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label>Girl's Aadhaar Card Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-aadhaar-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('girl-aadhaar-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label>Girl's Aadhaar Card Back Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-aadhaar-back-upload" accept=".pdf,.jpg,.png,.jpeg">
+            <button type="button" onclick="capturePhoto('girl-aadhaar-back-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label>Girl's Marksheet Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-marksheet-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('girl-marksheet-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label>Girl's Affidavit Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="girl-affidavit-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('girl-affidavit-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+    </fieldset>
+
+    <fieldset class="marriage-details">
+        <legend>Marriage Details</legend>
+        <div class="row">
+            <div class="col"><label>Marriage Center (EN):</label><input type="text" id="marriage-center-en" required></div>
+            <div class="col"><label>Marriage Center (HI):</label><input type="text" id="marriage-center-hi" required></div>
+        </div>
+        <label>Marriage Date:</label><input type="date" id="marriage-date" required>
+        <label>Marriage Certificate Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="marriage-certificate-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('marriage-certificate-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+    </fieldset>
+
+    <label>Who is Witness 1:</label><select id="witness1-relationship" required><option selected></option><option value="Mother">Mata / Pita (Mother / Father) - माता / पिता</option><option value="Brother">Bhai / Bhen (Brother / Sister) - भाई / बहन</option><option value="PaternalGrandparents">Dada / Dadi (Paternal Grandparents) - दादा / दादी</option><option value="MaternalGrandparents">Nana / Nani (Maternal Grandparents) - नाना / नानी</option><option value="Other">Other (Other) - अन्य</option></select><br><br>
+
+    <fieldset class="witness-details">
+        <legend>Witness 1 Details</legend>
+        <label>Witness 1's Photo:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="witness1-photo" accept="image/*" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('witness1-photo')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <img id="witness1-photo-preview" style="max-width: 200px; display: none;"><br><br>
+        <label>Title:</label><select id="witness1-title" required><option selected></option><option>Mr.</option><option>Mrs.</option></select>
+        <div class="row">
+            <div class="col"><label>Name (EN):</label><input type="text" id="witness1-name-en" required></div>
+            <div class="col"><label>Name (HI):</label><input type="text" id="witness1-name-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Father Name (EN):</label><input type="text" id="witness1-father-en" required></div>
+            <div class="col"><label>Father Name (HI):</label><input type="text" id="witness1-father-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Address (EN):</label><input type="text" id="witness1-address-en" required></div>
+            <div class="col"><label>Address (HI):</label><input type="text" id="witness1-address-hi" required></div>
+        </div>
+        <label>Witness 1's Proof Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="witness1-proof-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('witness1-proof-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label id="witness1-affidavit-label" style="display: none;">Witness 1's Affidavit Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="witness1-affidavit-upload" accept=".pdf,.jpg,.png,.jpeg" style="display: none;">
+            <button type="button" onclick="capturePhoto('witness1-affidavit-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; display: none;">📷 Camera</button>
+        </div>
+        <label>Mobile Number:</label><input type="tel" id="witness1-mobile" maxlength="10" required value="9800000000">
+    </fieldset>
+
+    <fieldset class="witness-details">
+        <legend>Witness 2 Details</legend>
+        <label>Witness 2's Photo:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="witness2-photo" accept="image/*" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('witness2-photo')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <img id="witness2-photo-preview" style="max-width: 200px; display: none;"><br><br>
+        <label>Title:</label><select id="witness2-title" required><option selected></option><option>Mr.</option><option>Mrs.</option></select>
+        <div class="row">
+            <div class="col"><label>Name (EN):</label><input type="text" id="witness2-name-en" required></div>
+            <div class="col"><label>Name (HI):</label><input type="text" id="witness2-name-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Father Name (EN):</label><input type="text" id="witness2-father-en" required></div>
+            <div class="col"><label>Father Name (HI):</label><input type="text" id="witness2-father-hi" required></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Address (EN):</label><input type="text" id="witness2-address-en" required></div>
+            <div class="col"><label>Address (HI):</label><input type="text" id="witness2-address-hi" required></div>
+        </div>
+        <label>Witness 2's Proof Upload:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="file" id="witness2-proof-upload" accept=".pdf,.jpg,.png,.jpeg" required style="flex: 1;">
+            <button type="button" onclick="capturePhoto('witness2-proof-upload')" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">📷 Camera</button>
+        </div>
+        <label>Mobile Number:</label><input type="tel" id="witness2-mobile" maxlength="10" required value="9800000000">
+    </fieldset>
+
+    <input type="submit" value="Submit Registration">
+</form>
+
+<div id="status-message" style="text-align: center; margin-top: 20px; padding: 10px; border-radius: 5px; display: none;"></div>
+
+<hr>
+
+<div class="terms-section">
+    <h2>Terms & Conditions</h2>
+    
+    <p><strong>This is for all person use the website</strong></p>
+    
+    <p>
+    These Terms & Conditions ("Terms") govern access and use of this website, platform, form, and related services
+    (collectively, "Service"). By using this Service, submitting any information, or requesting assistance through this website,
+    you agree to be legally bound by these Terms under applicable laws of India.
+    </p>
+    
+    <p>
+    <a href="terms.html" target="_blank" style="color: #1a73e8; text-decoration: underline;">Click here to read the complete Terms & Conditions</a>
+    </p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Age validation dates
+        const today = new Date();
+        document.getElementById('boy-dob').max = new Date(today.getFullYear() - 21, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+        document.getElementById('girl-dob').max = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+        document.getElementById('marriage-date').max = today.toISOString().split('T')[0];
+
+        async function autoTranslate(text, targetId) {
+            if (!text.trim()) return;
+            // Remove commas before sending to API
+            const cleanText = text.replace(/,/g, '');
+            const url = `https://inputtools.google.com/request?text=${encodeURIComponent(cleanText)}&itc=hi-t-i0-und&num=1`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data[0] === "SUCCESS") {
+                    document.getElementById(targetId).value = data[1][0][1][0];
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        // Live timestamp update
+        function updateTimestamp() {
+            const now = new Date();
+            const unixTime = Math.floor(now.getTime() / 1000);
+            const milliseconds = now.getMilliseconds();
+            document.getElementById('timestamp').value = unixTime + milliseconds.toString().padStart(3, '0');
+        }
+        
+        // Camera capture function
+        function capturePhoto(inputId) {
+            const input = document.getElementById(inputId);
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        const video = document.createElement('video');
+                        video.srcObject = stream;
+                        video.play();
+                        
+                        const canvas = document.createElement('canvas');
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        
+                        const context = canvas.getContext('2d');
+                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        
+                        canvas.toBlob(function(blob) {
+                            const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(file);
+                            input.files = dataTransfer.files;
+                            
+                            // Trigger change event for preview
+                            const event = new Event('change', { bubbles: true });
+                            input.dispatchEvent(event);
+                        }, 'image/jpeg');
+                        
+                        // Clean up
+                        stream.getTracks().forEach(track => track.stop());
+                    })
+                    .catch(function(err) {
+                        console.error('Camera access denied:', err);
+                        alert('Camera access denied. Please use file upload instead.');
+                    });
+            } else {
+                alert('Camera not supported on this device. Please use file upload instead.');
+            }
+        }
+
+        // Freeze timestamp at page load time
+        updateTimestamp();
+
+        // Convert all text inputs to uppercase
+        const textInputs = document.querySelectorAll('input[type="text"]');
+        textInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+        });
+
+        // Pincode validation - only numbers and spaces allowed
+        document.getElementById('boy-pincode').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9\s]/g, '').slice(0, 6);
+        });
+        
+        document.getElementById('girl-pincode').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9\s]/g, '').slice(0, 6);
+        });
+
+        // Global rule: NO COMMAS allowed in any input box
+        const allInputs = document.querySelectorAll('input');
+        allInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value.includes(',')) {
+                    this.value = this.value.replace(/,/g, '');
+                    alert("Commas (,) are not allowed in any field.");
+                }
+            });
+        });
+
+        // English to Hindi trigger
+        const enInputs = document.querySelectorAll('input[id$="-en"]');
+        enInputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                const targetId = this.id.replace('-en', '-hi');
+                autoTranslate(this.value, targetId);
+            });
+        });
+
+        // Auto-select girl's religion when boy's religion changes
+        document.getElementById('boy-religion').addEventListener('change', function() {
+            document.getElementById('girl-religion').value = this.value;
+        });
+
+        // Tehsil data and population functions - REMOVED (districts/tehsils deleted)
+
+        // Conditional Witness 1 Affidavit upload based on relationship
+        document.getElementById('witness1-relationship').addEventListener('change', function() {
+            const affidavitLabel = document.getElementById('witness1-affidavit-label');
+            const affidavitUpload = document.getElementById('witness1-affidavit-upload');
+            const affidavitButton = affidavitUpload.nextElementSibling;
+            if (this.value === 'Other') {
+                affidavitLabel.style.display = 'block';
+                affidavitUpload.style.display = 'block';
+                affidavitUpload.required = true;
+                affidavitButton.style.display = 'block';
+            } else {
+                affidavitLabel.style.display = 'none';
+                affidavitUpload.style.display = 'none';
+                affidavitUpload.required = false;
+                affidavitButton.style.display = 'none';
+            }
+        });
+
+        // Toggle all upload fields based on Yes/No selection
+        document.getElementById('upload-toggle').addEventListener('change', function() {
+            const allUploadInputs = document.querySelectorAll('input[type="file"]');
+            const allCameraButtons = document.querySelectorAll('button[onclick^="capturePhoto"]');
+            const allUploadLabels = document.querySelectorAll('label');
+            
+            if (this.value === 'No') {
+                // Hide all upload inputs and their camera buttons
+                allUploadInputs.forEach(input => {
+                    if (input.id.includes('upload') || input.id.includes('photo')) {
+                        input.style.display = 'none';
+                        input.required = false;
+                    }
+                });
+                
+                // Hide all camera buttons
+                allCameraButtons.forEach(button => {
+                    button.style.display = 'none';
+                });
+                
+                // Hide upload labels
+                allUploadLabels.forEach(label => {
+                    if (label.textContent.includes('Upload') || label.textContent.includes('Photo')) {
+                        label.style.display = 'none';
+                    }
+                });
+                
+                // Hide photo previews
+                document.querySelectorAll('img[id*="preview"]').forEach(img => {
+                    img.style.display = 'none';
+                });
+                
+            } else if (this.value === 'Yes') {
+                // Show all upload inputs and camera buttons
+                allUploadInputs.forEach(input => {
+                    if (input.id.includes('upload') || input.id.includes('photo')) {
+                        input.style.display = 'block';
+                        // Restore required status based on original requirements
+                        if (!input.id.includes('aadhaar-back') && !input.id.includes('witness1-affidavit')) {
+                            input.required = true;
+                        }
+                    }
+                });
+                
+                // Show all camera buttons
+                allCameraButtons.forEach(button => {
+                    button.style.display = 'block';
+                });
+                
+                // Show upload labels
+                allUploadLabels.forEach(label => {
+                    if (label.textContent.includes('Upload') || label.textContent.includes('Photo')) {
+                        label.style.display = 'block';
+                    }
+                });
+                
+                // Handle witness1 affidavit special case
+                const witness1Relationship = document.getElementById('witness1-relationship').value;
+                const affidavitLabel = document.getElementById('witness1-affidavit-label');
+                const affidavitUpload = document.getElementById('witness1-affidavit-upload');
+                const affidavitButton = affidavitUpload.nextElementSibling;
+                
+                if (witness1Relationship !== 'Other') {
+                    affidavitLabel.style.display = 'none';
+                    affidavitUpload.style.display = 'none';
+                    affidavitButton.style.display = 'none';
+                    affidavitUpload.required = false;
+                }
+            }
+        });
+
+        // Conditional hiding of district and tehsil based on address type - REMOVED (districts/tehsils deleted)
+
+        function calculateAge(dob, ageId) {
+            if (!dob) return;
+            const today = new Date();
+            const birthDate = new Date(dob);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            document.getElementById(ageId).value = age;
+        }
+
+        document.getElementById('boy-dob').addEventListener('change', function() {
+            calculateAge(this.value, 'boy-age');
+        });
+
+        document.getElementById('girl-dob').addEventListener('change', function() {
+            calculateAge(this.value, 'girl-age');
+        });
+
+        // Image preview functions
+        function previewImage(inputId, previewId) {
+            const fileInput = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            fileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.src = '';
+                    preview.style.display = 'none';
+                }
+            });
+        }
+
+        previewImage('boy-photo', 'boy-photo-preview');
+        previewImage('girl-photo', 'girl-photo-preview');
+        previewImage('witness1-photo', 'witness1-photo-preview');
+        previewImage('witness2-photo', 'witness2-photo-preview');
+
+        // Debug submit button
+        console.log('Form element:', document.getElementById('marriageForm'));
+        console.log('Submit button:', document.querySelector('input[type="submit"]'));
+        
+        // Test submit button directly
+        document.querySelector('input[type="submit"]').addEventListener('click', function(e) {
+            console.log('Submit button clicked!');
+            alert('Submit button is working!');
+        });
+
+        // Form submission to Google Sheets
+        document.getElementById('marriageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const statusDiv = document.getElementById('status-message');
+            statusDiv.style.display = 'block';
+            statusDiv.textContent = 'Submitting...';
+            statusDiv.style.backgroundColor = '#fff3cd';
+            statusDiv.style.color = '#856404';
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            // Send to Google Apps Script Web App
+            fetch('https://script.google.com/macros/s/AKfycbw5kr5IvVQcFA3etvDvhgrcl5VdihVNEdGeAXOXtHdHc11EROhNkQ16D7Z_h45t2WF49w/exec', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    timestamp: document.getElementById('timestamp').value,
+                    adv_name: document.getElementById('adv-name').value,
+                    'address-type': document.getElementById('address-type').value,
+                    'upload-toggle': document.getElementById('upload-toggle').value,
+                    'sadar-select': document.getElementById('sadar-select').value,
+                    'boy-name-en': document.getElementById('boy-name-en').value,
+                    'boy-name-hi': document.getElementById('boy-name-hi').value,
+                    'boy-mother-en': document.getElementById('boy-mother-en').value,
+                    'boy-mother-hi': document.getElementById('boy-mother-hi').value,
+                    'boy-father-en': document.getElementById('boy-father-en').value,
+                    'boy-father-hi': document.getElementById('boy-father-hi').value,
+                    'boy-dob': document.getElementById('boy-dob').value,
+                    'boy-age': document.getElementById('boy-age').value,
+                    'boy-religion': document.getElementById('boy-religion').value,
+                    'boy-address-en': document.getElementById('boy-address-en').value,
+                    'boy-address-hi': document.getElementById('boy-address-hi').value,
+                    'boy-pincode': document.getElementById('boy-pincode').value,
+                    'boy-mobile': document.getElementById('boy-mobile').value,
+                    'girl-name-en': document.getElementById('girl-name-en').value,
+                    'girl-name-hi': document.getElementById('girl-name-hi').value,
+                    'girl-mother-en': document.getElementById('girl-mother-en').value,
+                    'girl-mother-hi': document.getElementById('girl-mother-hi').value,
+                    'girl-father-en': document.getElementById('girl-father-en').value,
+                    'girl-father-hi': document.getElementById('girl-father-hi').value,
+                    'girl-dob': document.getElementById('girl-dob').value,
+                    'girl-age': document.getElementById('girl-age').value,
+                    'girl-religion': document.getElementById('girl-religion').value,
+                    'girl-address-en': document.getElementById('girl-address-en').value,
+                    'girl-address-hi': document.getElementById('girl-address-hi').value,
+                    'girl-pincode': document.getElementById('girl-pincode').value,
+                    'girl-mobile': document.getElementById('girl-mobile').value,
+                    'marriage-center-en': document.getElementById('marriage-center-en').value,
+                    'marriage-center-hi': document.getElementById('marriage-center-hi').value,
+                    'marriage-date': document.getElementById('marriage-date').value,
+                    'witness1-relationship': document.getElementById('witness1-relationship').value,
+                    'witness1-title': document.getElementById('witness1-title').value,
+                    'witness1-name-en': document.getElementById('witness1-name-en').value,
+                    'witness1-name-hi': document.getElementById('witness1-name-hi').value,
+                    'witness1-father-en': document.getElementById('witness1-father-en').value,
+                    'witness1-father-hi': document.getElementById('witness1-father-hi').value,
+                    'witness1-address-en': document.getElementById('witness1-address-en').value,
+                    'witness1-mobile': document.getElementById('witness1-mobile').value,
+                    'witness2-title': document.getElementById('witness2-title').value,
+                    'witness2-name-en': document.getElementById('witness2-name-en').value,
+                    'witness2-name-hi': document.getElementById('witness2-name-hi').value,
+                    'witness2-father-en': document.getElementById('witness2-father-en').value,
+                    'witness2-father-hi': document.getElementById('witness2-father-hi').value,
+                    'witness2-address-en': document.getElementById('witness2-address-en').value,
+                    'witness2-mobile': document.getElementById('witness2-mobile').value
+                }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then(response => response.text())
+            .then(result => {
+                if (result === 'Success') {
+                    statusDiv.textContent = 'Form submitted successfully!';
+                    statusDiv.style.backgroundColor = '#d4edda';
+                    statusDiv.style.color = '#155724';
+                    this.reset();
+                } else {
+                    statusDiv.textContent = 'Error: ' + result;
+                    statusDiv.style.backgroundColor = '#f8d7da';
+                    statusDiv.style.color = '#721c24';
+                }
+            })
+            .catch(error => {
+                statusDiv.textContent = 'Error: ' + error.message;
+                statusDiv.style.backgroundColor = '#f8d7da';
+                statusDiv.style.color = '#721c24';
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
