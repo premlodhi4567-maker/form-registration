@@ -747,11 +747,11 @@
         if (uploadToggle && timestampField) {
             uploadToggle.addEventListener('change', function() {
                 if (this.value === 'No') {
-                    // Auto-fill with "0000" and make non-editable
-                    timestampField.value = '0000';
+                    // Auto-fill with "1000" and make non-editable
+                    timestampField.value = '1000';
                     timestampField.readOnly = true;
                     timestampField.style.backgroundColor = '#e9ecef';
-                    timestampField.placeholder = 'Auto-filled: 0000';
+                    timestampField.placeholder = 'Auto-filled: 1000';
                     timestampField.required = false;
                 } else if (this.value === 'Yes') {
                     // Clear field and make editable/mandatory for 4-digit number
