@@ -5,7 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Form </title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f0f2f5; line-height: 1.6; background-image: url('https://images.unsplash.com/photo-1519225423996-6d5e8d5f8d3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; }      h1 { text-align: center; color: #1a73e8; font-size: 24px; }
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f0f2f5; line-height: 1.6; background-image: url('https://png.pngtree.com/background/20250314/original/pngtree-vibrant-traditional-indian-wedding-ceremony-decorated-with-flowers-and-artifacts-picture-image_16319627.jpg'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; position: relative; }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.85));
+            pointer-events: none;
+            z-index: -1;
+        }      h1 { text-align: center; color: #1a73e8; font-size: 32px; }
         
         /* Review Modal Styles */
         .review-modal {
@@ -156,7 +168,7 @@
 <body>
 
 <h1>Registration Form</h1>
-<h1>Please Pehle Document Upload Karke  (Folder_ID)  Enter Karein</h1>
+<h1>Please Pehle Document Upload Karke * (Folder_ID) * Prapt Karein</h1>
     
         
 <form id="marriageForm">
@@ -202,11 +214,11 @@
                 <label>Please Select Your Sadar:</label>
                 <select id="sadar-select" required>
                     <option selected></option>
-                    <option>Sadar First</option>
-                    <option>Sadar Second</option>
-                    <option>Sadar Third</option>
-                    <option>Sadar Fourth</option>
-                    <option>Sadar Fifth</option>
+                    <option>(1) Sadar First</option>
+                    <option>(2) Sadar Second</option>
+                    <option>(3) Sadar Third</option>
+                    <option>(4) Sadar Fourth</option>
+                    <option>(5) Sadar Fifth</option>
                 </select>
             </div>
         </div>
@@ -656,22 +668,134 @@
                         // Marriage date cannot be in future
                         picker.max = today.toISOString().split('T')[0];
                     } else if (id === 'appointment-date') {
-                        // Appointment date can be in future, but not too far
+                        // Appointment date validation with time-based rules
+                        const now = new Date();
+                        const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes
+                        const cutoffTime = 11 * 60 + 50; // 11:50 AM in minutes (710 minutes)
+                        
+                        // Set minimum date based on current time
+                        if (currentTime > cutoffTime) {
+                            // After 11:50 AM - minimum date is tomorrow
+                            const tomorrow = new Date(today);
+                            tomorrow.setDate(today.getDate() + 1);
+                            picker.min = tomorrow.toISOString().split('T')[0];
+                        } else {
+                            // Before or at 11:50 AM - minimum date is today
+                            picker.min = today.toISOString().split('T')[0];
+                        }
+                        
+                        // Maximum date is 1 year from today
                         const maxDate = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
                         picker.max = maxDate.toISOString().split('T')[0];
                     }
                 }
                 
-                // Add change event listener for age calculation
+                // Add change event listener for age calculation and appointment validation
                 input.addEventListener('change', function() {
                     if (id === 'boy-dob') {
                         calculateAge(this.value, 'boy-age');
                     } else if (id === 'girl-dob') {
                         calculateAge(this.value, 'girl-age');
+                    } else if (id === 'appointment-date') {
+                        validateAppointmentDate(this.value);
                     }
                 });
+                
+                // For appointment date, also refresh picker validation on focus
+                if (id === 'appointment-date' && picker) {
+                    input.addEventListener('focus', function() {
+                        // Refresh the date picker limits based on current time
+                        const now = new Date();
+                        const currentTime = now.getHours() * 60 + now.getMinutes();
+                        const cutoffTime = 11 * 60 + 50;
+                        const today = new Date();
+                        
+                        if (currentTime > cutoffTime) {
+                            // After 11:50 AM - minimum date is tomorrow
+                            const tomorrow = new Date(today);
+                            tomorrow.setDate(today.getDate() + 1);
+                            picker.min = tomorrow.toISOString().split('T')[0];
+                        } else {
+                            // Before or at 11:50 AM - minimum date is today
+                            picker.min = today.toISOString().split('T')[0];
+                        }
+                    });
+                }
             }
         });
+
+        function validateAppointmentDate(dateString) {
+            if (!dateString) return;
+            
+            // Parse DD-MM-YYYY format
+            const regex = /^(\d{2})-(\d{2})-(\d{4})$/;
+            if (!regex.test(dateString)) {
+                alert('Please enter appointment date in DD-MM-YYYY format');
+                document.getElementById('appointment-date').value = '';
+                return;
+            }
+            
+            const [, day, month, year] = dateString.match(regex);
+            const selectedDate = new Date(year, month - 1, day);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set to midnight for comparison
+            selectedDate.setHours(0, 0, 0, 0); // Set to midnight for comparison
+            
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes
+            const cutoffTime = 11 * 60 + 50; // 11:50 AM in minutes (710 minutes)
+            
+            // Check if date is in the past
+            if (selectedDate < today) {
+                alert('Appointment date cannot be in the past. Please select today or a future date.');
+                document.getElementById('appointment-date').value = '';
+                return;
+            }
+            
+            // Check time-based restriction for today
+            if (selectedDate.getTime() === today.getTime() && currentTime > cutoffTime) {
+                alert('Appointments for today are not available after 11:50 AM. Please select tomorrow or a future date.');
+                document.getElementById('appointment-date').value = '';
+                return;
+            }
+            
+            // Check if date is too far in the future (more than 1 year)
+            const maxDate = new Date(today);
+            maxDate.setFullYear(today.getFullYear() + 1);
+            if (selectedDate > maxDate) {
+                alert('Appointment date cannot be more than 1 year in the future.');
+                document.getElementById('appointment-date').value = '';
+                return;
+            }
+        }
+
+        function validateHindiFields() {
+            const hindiFields = [
+                'boy-name-hi', 'boy-mother-hi', 'boy-father-hi', 'boy-address-hi',
+                'girl-name-hi', 'girl-mother-hi', 'girl-father-hi', 'girl-address-hi',
+                'witness1-name-hi', 'witness1-father-hi', 'witness1-address-hi',
+                'witness2-name-hi', 'witness2-father-hi', 'witness2-address-hi',
+                'marriage-center-hi'
+            ];
+            
+            // Hindi Unicode range check (Devanagari script: \u0900-\u097F)
+            const hindiRegex = /[\u0900-\u097F]/;
+            
+            for (const fieldId of hindiFields) {
+                const field = document.getElementById(fieldId);
+                if (field && field.required && field.value.trim()) {
+                    // Check if field contains at least one Hindi character
+                    if (!hindiRegex.test(field.value)) {
+                        const fieldName = fieldId.replace('-hi', '').replace(/-/g, ' ').toUpperCase();
+                        alert(`${fieldName} (Hindi) field must contain Hindi text. Please type in Hindi or use the auto-translation feature.`);
+                        field.focus();
+                        return false;
+                    }
+                }
+            }
+            
+            return true;
+        }
 
         function autoTranslate(text, targetId) {
             if (!text.trim()) return;
@@ -1590,6 +1714,12 @@
         document.getElementById('marriageForm').addEventListener('submit', function(e) {
             console.log('Form submission started!');
             e.preventDefault();
+            
+            // Validate Hindi fields before proceeding
+            if (!validateHindiFields()) {
+                return; // Stop submission if Hindi validation fails
+            }
+            
             showReviewModal();
         });
     });
