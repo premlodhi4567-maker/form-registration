@@ -402,6 +402,7 @@
             <label><strong>Select Witness 2 Name (Auto-Fill Available):</strong></label>
             <select id="witness2-name-select">
                 <option value="">-- Choose from Pre-filled Witnesses --</option>
+                <option value="Vijay">Vijay</option>
                 <option value="Bittu">Bittu</option>
                 <option value="Vipin Kumar">Vipin Kumar</option>
             </select>
@@ -1644,7 +1645,16 @@
         // Witness 2 auto-fill functionality
         const witness2NameSelect = document.getElementById('witness2-name-select');
         const witness2Data = {
-            'Bittu': {
+            'Vijay': {
+                name_en: 'Vijay',
+                name_hi: 'विजय'	,
+                father_en: 'Bhupa Singh',
+                father_hi: 'भूपा सिंह',
+                address_en: 'Shiv Mandir Rd, Seelampur, Jahangirabad, Bulandshahr, Uttar Pradesh, 203394',
+                address_hi: 'शिव मंदिर रोड, सीलमपुर, जहांगीराबाद, बुलंदशहर, उत्तर प्रदेश, 203394',
+                mobile: '9800000000'
+            },
+			'Bittu': {
                 name_en: 'Bittu',
                 name_hi: 'बिट्टू',
                 father_en: 'Prahlad Singh',
