@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Maintenance / Upgrade</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            padding: 20px; 
+            background-color: #f0f2f5; 
+            line-height: 1.6; 
+            background-image: url('https://png.pngtree.com/background/20250314/original/pngtree-vibrant-traditional-indian-wedding-ceremony-decorated-with-flowers-and-artifacts-picture-image_16319627.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed; 
+            background-repeat: no-repeat; 
+            position: relative; 
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.85));
+            pointer-events: none;
+            z-index: -1;
+        }      
+        
+        h1 { text-align: center; color: #1a73e8; font-size: 32px; }
+        
+        form { max-width: 900px; margin: auto; background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); backdrop-filter: blur(5px); }
+        @media (max-width: 768px) {
+            form { padding: 10px; margin: 10px; }
+            .row { flex-direction: column; gap: 10px; }
+            .col { width: 100%; }
+            input, select { font-size: 16px; }
+            h1 { font-size: 20px; }
+        }
+        fieldset { border: 1px solid #e0e0e0; margin-bottom: 25px; padding: 20px; border-radius: 8px; }
+        legend { font-weight: bold; color: #1a73e8; padding: 0 10px; }
+        .boy-details { background-color: #e3f2fd; }
+        .girl-details { background-color: #f3e5f5; }
+        .marriage-details { background-color: #e8f5e8; }
+        .witness-details { background-color: #fff3e0; }
+        .address-selection { margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #ddd; }
+        .address-selection label { display: block; margin-bottom: 10px; font-weight: normal; }
+        .address-selection input, .address-selection select { width: 100%; margin-bottom: 10px; }
+        label { font-weight: 600; display: block; margin-top: 15px; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        .row { display: flex; gap: 15px; margin-bottom: 10px; }
+        .col { flex: 1; }
+        .col label { margin-top: 0; }
+        .upload-selection { margin-bottom: 20px; padding: 15px; background-color: #fff3cd; border-radius: 8px; border: 1px solid #ddd; }
+        .sadar-selection { margin-bottom: 20px; padding: 15px; background-color: #e7f3ff; border-radius: 8px; border: 1px solid #ddd; }
+        .witness-name-selection { margin-bottom: 20px; padding: 15px; background-color: #fff3cd; border-radius: 8px; border: 1px solid #ffeaa7; }
+        .witness-name-selection label { display: block; margin-bottom: 10px; font-weight: normal; }
+        .witness-name-selection select { margin-bottom: 10px; padding: 10px; border: 2px solid #007bff; border-radius: 4px; background: white; font-size: 14px; font-weight: bold; }
+        .witness-name-selection small { display: block; color: #666; font-style: italic; margin-top: 5px; }
+        .timestamp-section { margin-bottom: 20px; padding: 15px; background-color: #e8f4f8; border-radius: 8px; border: 1px solid #ddd; }
+        .timestamp-section input { background-color: #d4edda; font-weight: bold; text-align: center; }
+        .terms-section { margin-top: 40px; padding: 30px; background: rgba(248, 249, 250, 0.95); border-radius: 8px; border: 1px solid #ddd; backdrop-filter: blur(5px); }
+        .terms-section h2 { color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 10px; }
+
+        /* Lock Overlay & Transparent Popup */
+        .upgrade-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 999999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .upgrade-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            border-radius: 18px;
+            padding: 35px 25px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            color: #1e293b;
+        }
+
+        .upgrade-card h2 {
+            font-size: 26px;
+            color: #0f172a;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .upgrade-card p {
+            font-size: 15px;
+            color: #475569;
+            margin-bottom: 25px;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .time-box {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 12px 10px;
+            min-width: 65px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a73e8;
+            line-height: 1.2;
+        }
+
+        .time-box label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .target-badge {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Upgrade Lock Popup -->
+<div id="upgradeModal" class="upgrade-overlay">
+    <div class="upgrade-card">
+        <h2>🛠️ We Are Upgrading</h2>
+        <p>Our system is currently undergoing scheduled maintenance. We'll be back online shortly!</p>
+        
+        <div class="countdown-container">
+            <div class="time-box">
+                <span id="hours">00</span>
+                <label>Hours</label>
+            </div>
+            <div class="time-box">
+                <span id="minutes">00</span>
+                <label>Minutes</label>
+            </div>
+            <div class="time-box">
+                <span id="seconds">00</span>
+                <label>Seconds</label>
+            </div>
+        </div>
+
+        <div class="target-badge">Expected Back: 27 Aug 2026, 02:00 PM IST</div>
+    </div>
+</div>
+
+<h1>Affidavit Form</h1>
+<h1>What goes around, comes around</h1>
+<h1>यदि आवां मित्रे न स्वः, तर्हि शत्रू अपि न स्वः</h1>
+    
+<form id="marriageForm">
+    <div class="address-selection">
+        <div class="row">
+            <div class="col">
+                <label>ADV Name:</label>
+                <input type="text" id="adv-name" disabled>
+            </div>
+            <div class="col">
+                <label>Address Type: (Who is from Ghaziabad)</label>
+                <select id="address-type" disabled>
+                    <option selected></option>
+                    <option>Boy Address</option>
+                    <option>Girl Address</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="upload-selection">
+        <div class="row">
+            <div class="col">
+                <label>Do you want Upload the documents ?</label>
+                <select id="upload-toggle" disabled>
+                    <option selected></option>
+                    <option>Yes</option>
+                    <option>No</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="timestamp-section">
+        <input type="text" id="timestamp" placeholder="Enter Folder_ID" style="width: 300px; margin: 10px auto; display: block; padding: 10px; background-color: #d4edda; font-weight: bold; text-align: center; border: 1px solid #c3e6cb; border-radius: 4px;" disabled>
+    </div>
+        
+    <div class="sadar-selection">
+        <div class="row">
+            <div class="col">
+                <label>Please Select Your Sadar:</label>
+                <select id="sadar-select" disabled>
+                    <option selected></option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <fieldset class="boy-details">
+        <legend>Boy's Details</legend>
+        <div class="row">
+            <div class="col"><label>Boy Name (EN):</label><input type="text" id="boy-name-en" disabled></div>
+            <div class="col"><label>Boy Name (HI):</label><input type="text" id="boy-name-hi" disabled></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Mother Name (EN):</label><input type="text" id="boy-mother-en" disabled></div>
+            <div class="col"><label>Mother Name (HI):</label><input type="text" id="boy-mother-hi" disabled></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Father Name (EN):</label><input type="text" id="boy-father-en" disabled></div>
+            <div class="col"><label>Father Name (HI):</label><input type="text" id="boy-father-hi" disabled></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Boy DOB (DD/MM/YYYY):</label><input type="text" id="boy-dob" placeholder="DD/MM/YYYY" disabled></div>
+            <div class="col"><label>Age:</label><input type="text" id="boy-age" readonly disabled></div>
+        </div>
+        <label>Marriage Status:</label><select id="boy-marriage-status" disabled><option></option><option selected>Unmarried</option></select>
+        <label>Religion:</label><select id="boy-religion" disabled><option selected></option><option>Hindu</option></select>
+        <div class="row">
+            <div class="col"><label>Address (EN):</label><input type="text" id="boy-address-en" disabled></div>
+            <div class="col"><label>Address (HI):</label><input type="text" id="boy-address-hi" disabled></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Pincode:</label><input type="text" id="boy-pincode" disabled></div>
+            <div class="col"><label>Mobile:</label><input type="tel" id="boy-mobile" disabled></div>
+        </div>
+    </fieldset>
+
+    <fieldset class="girl-details">
+        <legend>Girl's Details</legend>
+        <div class="row">
+            <div class="col"><label>Girl Name (EN):</label><input type="text" id="girl-name-en" disabled></div>
+            <div class="col"><label>Girl Name (HI):</label><input type="text" id="girl-name-hi" disabled></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Mother (EN):</label><input type="text" id="girl-mother-en" disabled></div>
+            <div class="col"><label>Mother (HI):</label><input type="text" id="girl-mother-hi" disabled></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Father (EN):</label><input type="text" id="girl-father-en" disabled></div>
+            <div class="col"><label>Father (HI):</label><input type="text" id="girl-father-hi" disabled></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Girl DOB (DD/MM/YYYY):</label><input type="text" id="girl-dob" placeholder="DD/MM/YYYY" disabled></div>
+            <div class="col"><label>Age:</label><input type="text" id="girl-age" readonly disabled></div>
+        </div>
+        <label>Marriage Status:</label><select id="girl-marriage-status" disabled><option></option><option selected>Unmarried</option></select>
+        <label>Religion:</label><select id="girl-religion" disabled><option selected></option><option>Hindu</option></select>
+        <div class="row">
+            <div class="col"><label>Address (EN):</label><input type="text" id="girl-address-en" disabled></div>
+            <div class="col"><label>Address (HI):</label><input type="text" id="girl-address-hi" disabled></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Pincode:</label><input type="text" id="girl-pincode" disabled></div>
+            <div class="col"><label>Mobile:</label><input type="tel" id="girl-mobile" disabled></div>
+        </div>
+    </fieldset>
+
+    <fieldset class="marriage-details">
+        <legend>Marriage Details</legend>
+        <div class="row">
+            <div class="col"><label>Marriage Center (EN):</label><input type="text" id="marriage-center-en" disabled></div>
+            <div class="col"><label>Marriage Center (HI):</label><input type="text" id="marriage-center-hi" disabled></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>Marriage Date (DD/MM/YYYY):</label><input type="text" id="marriage-date" disabled></div>
+            <div class="col"><label>Appointment Date (DD-MM-YYYY):</label><input type="text" id="appointment-date" disabled></div>
+        </div>
+    </fieldset>
+
+    <fieldset class="witness-details">
+        <legend>Witness Details</legend>
+        <div class="row">
+            <div class="col"><label>Name (EN):</label><input type="text" id="witness1-name-en" disabled></div>
+            <div class="col"><label>Address (EN):</label><input type="text" id="witness1-address-en" disabled></div>
+        </div>
+    </fieldset>
+</form>
+
+<div class="terms-section">
+    <h2>Terms & Conditions</h2>
+    <p><strong>This is for all persons using the website</strong></p>
+    <p>These Terms & Conditions govern access and use of this website. By using this Service, you agree to be legally bound by these Terms.</p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Target: 27 August 2026, 14:00:00 (2:00 PM) IST (+05:30)
+        const targetDate = new Date('2026-08-27T14:00:00+05:30').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference <= 0) {
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+
+            const hours = Math.floor(difference / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        // Show lock popup after exactly 1 second
+        setTimeout(function() {
+            const modal = document.getElementById('upgradeModal');
+            modal.style.display = 'flex';
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }, 1000);
+    });
+</script>
+
+</body>
+</html>
